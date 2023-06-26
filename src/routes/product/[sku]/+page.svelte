@@ -22,8 +22,8 @@
 					href="/products/{slugify(category.name)}">{category.name}</a
 				>
 			{/each}
-			<h1 class="mb-4 text-3xl">{product.name}</h1>
-			<p class="mb-4 text-3xl text-slate-900">{formatPrice(product.price)}</p>
+			<h1 class="mb-4 text-4xl">{product.name}</h1>
+			<div class="mb-4 text-3xl dark:text-slate-100">{formatPrice(product.price)}</div>
 			<p class="mb-4">{product.description}</p>
 			<button class="btn">Add to Bag</button>
 		</div>

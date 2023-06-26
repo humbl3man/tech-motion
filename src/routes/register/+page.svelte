@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
+	import Loader from '$lib/components/Loader.svelte';
 	import { superForm } from 'sveltekit-superforms/client';
 
 	export let data;
@@ -76,8 +77,15 @@
 				<button
 					type="submit"
 					class="btn w-full sm:w-1/2"
-					disabled={isProcesing}>Register</button
+					disabled={isProcesing}
 				>
+					{#if isProcesing}
+						<Loader />
+						Processing...
+					{:else}
+						Create Account
+					{/if}
+				</button>
 			</div>
 		</div>
 	</form>

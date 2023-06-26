@@ -4,7 +4,7 @@
 
 @layer base {
 	body {
-		@apply pt-32;
+		@apply bg-white pt-32 dark:bg-slate-900;
 	}
 
 	h1,
@@ -14,32 +14,45 @@
 	h5,
 	h6 {
 		@apply font-serif;
+		@apply text-slate-950 dark:text-slate-50;
 	}
 
 	.link {
-		@apply inline-block text-indigo-600 transition-colors duration-[200ms] hover:text-indigo-500/90 hover:underline;
+		@apply inline-block text-indigo-600 transition-colors duration-[200ms] hover:text-indigo-500/90 hover:underline dark:text-indigo-300 dark:hover:text-indigo-200;
 	}
 
 	main p,
 	main ul {
-		@apply text-slate-600;
+		@apply text-slate-600 dark:text-slate-200/70;
+	}
+
+	label {
+		@apply text-slate-950 dark:text-slate-100;
 	}
 }
 
 @layer components {
 	.btn {
-		@apply rounded-[4px] bg-indigo-500 px-[0.75rem] py-[0.5rem] font-serif text-base leading-normal text-white shadow-indigo-500/10 drop-shadow-sm hover:bg-indigo-500/90;
+		@apply rounded-lg bg-blue-700 text-base font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800;
+		@apply px-5 py-2.5;
 	}
-	.btn.btn--small {
-		@apply px-[0.5rem] py-[0.2rem];
+	.btn.btn-xs {
+		@apply px-3 py-2 text-xs;
 	}
-	.btn.btn--large {
-		@apply text-lg;
+	.btn.btn-sm {
+		@apply px-4 py-2 text-sm;
+	}
+	.btn.btn-lg {
+		@apply px-5 py-3;
+	}
+	.btn.btn-xl {
+		@apply px-6 py-3.5;
 	}
 	.btn:disabled {
-		@apply opacity-60;
+		@apply cursor-not-allowed bg-blue-400 opacity-80 dark:bg-blue-500;
 	}
+
 	.input {
-		@apply rounded-[4px] border-slate-400/90 shadow-slate-600/95 drop-shadow-sm placeholder:text-slate-400;
+		@apply block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500;
 	}
 }

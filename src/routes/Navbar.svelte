@@ -6,7 +6,7 @@
 
 	export let isUserLoggedIn: boolean;
 
-	$: textColorClass = $page.url.pathname === '/' ? 'text-white' : '';
+	$: textColorClass = $page.url.pathname === '/' ? 'text-white' : 'text-slate-950 dark:text-slate-50';
 </script>
 
 <header class="group absolute left-0 right-0 top-0 z-10 w-full bg-indigo-100/10 py-6 backdrop-blur-md">

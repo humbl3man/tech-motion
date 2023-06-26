@@ -6,7 +6,7 @@
 	import bikesImage from '$lib/assets/images/hp-bikes.jpg';
 </script>
 
-<div class="relative isolate -mt-32 px-6 pt-36 lg:px-8">
+<!-- <div class="relative isolate -mt-32 px-6 pt-36 lg:px-8">
 	<div class="absolute left-0 top-0 h-full w-full brightness-50">
 		<img
 			src={heroImage}
@@ -25,12 +25,45 @@
 			<div class="mt-10 flex items-center justify-center gap-x-6">
 				<a
 					href="/products"
-					class="btn">View Our Products</a
+					class="btn btn-xl">View Our Products</a
 				>
 			</div>
 		</div>
 	</div>
-</div>
+</div> -->
+
+<section class="bg-white dark:bg-gray-900">
+	<div class="mx-auto max-w-screen-xl px-4 py-8 text-center lg:py-32">
+		<h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 dark:text-white md:text-5xl lg:text-6xl">
+			Unleash Your Fitness Potential
+		</h1>
+		<p class="mb-8 text-lg font-normal text-gray-500 dark:text-gray-400 sm:px-16 lg:px-48 lg:text-xl">
+			Discover Cutting-Edge Fitness Tech for Your Active Lifestyle
+		</p>
+		<div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-x-4 sm:space-y-0">
+			<a
+				href="/products"
+				class="btn btn-xl inline-flex items-center"
+			>
+				View our Catalog
+				<svg
+					aria-hidden="true"
+					class="-mr-1 ml-2 h-5 w-5"
+					fill="currentColor"
+					viewBox="0 0 20 20"
+					xmlns="http://www.w3.org/2000/svg"
+					><path
+						fill-rule="evenodd"
+						d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+						clip-rule="evenodd"
+					/></svg
+				>
+			</a>
+		</div>
+	</div>
+</section>
+
+<!-- Categories -->
 
 <section class="my-12">
 	<div class="container mx-auto px-4">
@@ -48,7 +81,7 @@
 						alt=""
 						loading="lazy"
 					/>
-					<div class="mt-4 text-center">Wireless Headphones</div>
+					<div class="mt-4 text-center dark:text-slate-100">Wireless Headphones</div>
 				</a>
 			</article>
 			<article>
@@ -62,7 +95,7 @@
 						alt=""
 						loading="lazy"
 					/>
-					<div class="mt-4 text-center">Smart Scales</div>
+					<div class="mt-4 text-center dark:text-slate-100">Smart Scales</div>
 				</a>
 			</article>
 			<article>
@@ -76,7 +109,7 @@
 						alt=""
 						loading="lazy"
 					/>
-					<div class="mt-4 text-center">Smart Watches</div>
+					<div class="mt-4 text-center dark:text-slate-100">Smart Watches</div>
 				</a>
 			</article>
 			<article>
@@ -90,7 +123,7 @@
 						alt=""
 						loading="lazy"
 					/>
-					<div class="mt-4 text-center">Stationary Bikes</div>
+					<div class="mt-4 text-center dark:text-slate-100">Stationary Bikes</div>
 				</a>
 			</article>
 		</div>
