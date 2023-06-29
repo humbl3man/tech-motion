@@ -46,7 +46,7 @@ export const actions = {
 		}
 
 		try {
-			await db.user.create({
+			const createdUser = await db.user.create({
 				data: {
 					email: form.data.email,
 					passwordHash: await bcrypt.hash(form.data.password, 10),
@@ -56,6 +56,13 @@ export const actions = {
 							id: Role.USER
 						}
 					}
+				}
+			});
+
+			// create new cart after registering user
+			await db.cart.create({
+				data: {
+					userId: createdUser.email
 				}
 			});
 		} catch (err: unknown) {

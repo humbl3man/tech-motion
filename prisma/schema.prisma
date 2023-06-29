@@ -19,10 +19,23 @@ model Product {
   description String
   categories  Category[]
   price       Int
-  Order       Order?      @relation(fields: [orderId], references: [id])
-  orderId     Int?
-  Cart        Cart?       @relation(fields: [cartId], references: [id])
-  cartId      Int?
+  items       CartItem[]
+}
+
+model CartItem {
+  id        Int     @id @default(autoincrement())
+  quantity  Int
+  cart      Cart    @relation(fields: [cartId], references: [id])
+  cartId    Int
+  product   Product @relation(fields: [productId], references: [sku])
+  productId Int     @unique
+}
+
+model Cart {
+  id     Int        @id @unique @default(autoincrement())
+  items  CartItem[]
+  user   User       @relation(fields: [userId], references: [email])
+  userId String     @unique
 }
 
 model Category {
@@ -38,18 +51,16 @@ model Attribute {
 }
 
 model User {
-  id              Int      @id @default(autoincrement())
+  email           String   @id @unique
   firstName       String?
   lastName        String?
-  email           String   @unique
   passwordHash    String
   authToken       String   @unique
   phoneNumber     String?
   shippingAddress String?
-  orderHistory    Order[]
   role            Role     @relation(fields: [roleId], references: [id])
   roleId          Int
-  Cart            Cart[]
+  Cart            Cart?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
@@ -58,18 +69,4 @@ model Role {
   id    Int    @id @default(autoincrement())
   name  String
   users User[]
-}
-
-model Order {
-  id     Int       @id @default(autoincrement())
-  user   User      @relation(fields: [userId], references: [id])
-  userId Int
-  items  Product[]
-}
-
-model Cart {
-  id     Int       @id @default(autoincrement())
-  items  Product[]
-  user   User?     @relation(fields: [userId], references: [id])
-  userId Int?
 }

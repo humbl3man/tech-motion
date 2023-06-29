@@ -13,7 +13,6 @@ const auth: Handle = async ({ event, resolve }) => {
 		},
 		select: {
 			email: true,
-			id: true,
 			firstName: true,
 			lastName: true,
 			roleId: true
@@ -23,7 +22,6 @@ const auth: Handle = async ({ event, resolve }) => {
 	if (user) {
 		event.locals.user = {
 			email: user.email,
-			id: user.id,
 			firstName: user.firstName || '',
 			lastName: user.lastName || '',
 			role: user.roleId
