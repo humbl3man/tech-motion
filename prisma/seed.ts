@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { attributes, categories, products } from './sample';
 
 const db = new PrismaClient();
 
@@ -12,56 +13,6 @@ const roles = [
 		name: 'Admin'
 	}
 ];
-
-const attributes = [
-	{ id: 1, value: 'Color' },
-	{ id: 2, value: 'Size' },
-	{ id: 3, value: 'Material' },
-	{ id: 4, value: 'Weight' },
-	{ id: 5, value: 'Brand' },
-	{ id: 6, value: 'Style' }
-];
-
-const categories = [
-	{ id: 1, name: 'Smart Watches' },
-	{ id: 2, name: 'Smart Scales' },
-	{ id: 3, name: 'Stationary Bikes' },
-	{ id: 4, name: 'Headphones' }
-];
-
-// TODO: Seed product data, or create UI for admin to add products
-// const products = [
-// 	{
-//     id: 1,
-//     name: 'Men\'s Running Shoes',
-//     categories: [
-//       { id: 8, name: 'Sneakers' }
-//     ],
-//     attributes: [
-//       { id: 2, value: 'XL' }, // Size: XL
-//       { id: 5, value: 'Nike' }, // Brand: Nike
-//       { id: 1, value: 'Red' } // Color: Red
-//     ],
-//     price: 79.99,
-//     image: 'men-running-shoes.jpg',
-//     description: 'Comfortable running shoes for men',
-//   },
-//   {
-//     id: 2,
-//     name: 'Women\'s Sports Bra',
-//     categories: [
-//       { id: 6, name: 'Sports Bras' }
-//     ],
-//     attributes: [
-//       { id: 2, value: 'M' }, // Size: M
-//       { id: 6, value: 'Modern' }, // Style: Modern
-//       { id: 9, value: 'V-Neck' } // Neckline: V-Neck
-//     ],
-//     price: 39.99,
-//     image: 'women-sports-bra.jpg',
-//     description: 'Supportive sports bra for women',
-//   },
-// ];
 
 async function main() {
 	// roles
@@ -98,6 +49,22 @@ async function main() {
 			create: {
 				id: category.id,
 				name: category.name
+			}
+		});
+	}
+
+	// products
+	for (const product of products) {
+		await db.product.upsert({
+			where: { sku: product.sku },
+			// no need to update if product is already in database
+			update: {},
+			create: {
+				sku: product.sku,
+				description: product.description,
+				price: product.price,
+				name: product.name,
+				image: product.image
 			}
 		});
 	}
