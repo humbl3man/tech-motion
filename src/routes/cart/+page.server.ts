@@ -75,5 +75,33 @@ export const actions = {
 				items: true
 			}
 		});
+	},
+	remove: async (event) => {
+		const form = await superValidate(event, productAddSchema);
+
+		if (!event.locals.user) {
+			return fail(401, {
+				message: 'Unauthorized'
+			});
+		}
+
+		if (!form.valid) {
+			return fail(400, {
+				message: 'Unable to add product to cart. Missing SKU information.'
+			});
+		}
+
+		const deleteSku = Number(form.data.sku);
+
+		await db.cart.update({
+			where: {
+				userId: event.locals.user.email
+			},
+			data: {
+				items: {
+					deleteMany: [{ productId: deleteSku }]
+				}
+			}
+		});
 	}
 };
