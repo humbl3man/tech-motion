@@ -87,7 +87,7 @@ export const actions = {
 
 		if (!form.valid) {
 			return fail(400, {
-				message: 'Unable to add product to cart. Missing SKU information.'
+				message: 'Unable to remove product. Missing SKU information.'
 			});
 		}
 
