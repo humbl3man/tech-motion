@@ -1,55 +1,59 @@
 <script lang="ts">
-	import { enhance, applyAction } from '$app/forms';
-	import { invalidateAll } from '$app/navigation';
-	import { page } from '$app/stores';
 	import Container from '$lib/components/Container.svelte';
+	import Navlinks from '$lib/components/Navlinks.svelte';
 
 	export let isUserLoggedIn: boolean;
+	let headerHeight: number = 0;
+	let menuOpen = false;
 
-	$: textColorClass = $page.url.pathname === '/' ? 'text-white' : 'text-slate-950 dark:text-slate-50';
+	function toggleMenuOpen() {
+		menuOpen = !menuOpen;
+	}
+
+	function getHeaderHeight(element: HTMLElement) {
+		headerHeight = element.clientHeight;
+	}
 </script>
 
-<header class="group absolute left-0 right-0 top-0 z-10 w-full bg-indigo-100/10 py-6 backdrop-blur-md">
-	<div class="absolute left-0 right-0 top-0 -z-10 h-full w-full blur-md" />
+<header
+	class="group bg-indigo-100/10 py-6 backdrop-blur-md"
+	use:getHeaderHeight
+>
 	<Container>
-		<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+		<div class="flex items-center justify-between gap-4">
 			<a
 				href="/"
-				class="ml-6 font-serif text-2xl sm:ml-0 {textColorClass}">TechMotion</a
+				class="font-serif text-2xl dark:text-white sm:ml-0">TechMotion</a
 			>
-			<nav class="flex flex-col gap-8 bg-slate-100 px-6 py-4 sm:flex-row sm:gap-16 sm:bg-transparent sm:px-0 sm:py-0">
-				<ul class="flex flex-col gap-4 sm:flex-row {textColorClass}">
-					<li><a href="/">Home</a></li>
-					<li><a href="/about">About</a></li>
-					<li><a href="/products">Products</a></li>
-					<li><a href="/contact">Contact</a></li>
-				</ul>
-				<div class="flex flex-col gap-4 sm:flex-row {textColorClass}">
-					<a href="/cart">Cart</a>
-					{#if isUserLoggedIn}
-						<div class="flex gap-[2px]">
-							<a href="/account">Account</a>
-							<form
-								action="/account?/logout"
-								method="post"
-								use:enhance={() => {
-									return async ({ result }) => {
-										await invalidateAll();
-										await applyAction(result);
-									};
-								}}
-							>
-								(<button
-									type="submit"
-									class="underline">Logout</button
-								>)
-							</form>
-						</div>
-					{:else}
-						<a href="/login">Login</a>
-					{/if}
-				</div>
-			</nav>
+			<!-- Desktop Links -->
+			<div
+				class="hidden sm:block"
+				id="desktop-navigation"
+			>
+				<nav class="flex gap-8 px-0 py-0">
+					<Navlinks {isUserLoggedIn} />
+				</nav>
+			</div>
+			<!-- Mobile Menu Toggle -->
+			<button
+				type="button"
+				class="dark:text-slate-50 sm:hidden"
+				on:click={toggleMenuOpen}>Menu</button
+			>
 		</div>
 	</Container>
 </header>
+
+<!-- Mobile Links -->
+<div
+	class="{menuOpen
+		? ''
+		: 'hidden'} fixed bottom-0 left-0 right-0 z-[999] h-full w-full bg-slate-200 px-4 py-8 dark:bg-slate-700 sm:hidden"
+	style="top: {headerHeight}px"
+	id="mobile-navigation"
+>
+	<Navlinks
+		{isUserLoggedIn}
+		on:click={() => (menuOpen = false)}
+	/>
+</div>

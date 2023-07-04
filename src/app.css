@@ -4,7 +4,7 @@
 
 @layer base {
 	body {
-		@apply bg-white pt-32 dark:bg-slate-900;
+		@apply bg-white dark:bg-slate-900;
 	}
 
 	h1,
