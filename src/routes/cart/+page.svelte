@@ -18,7 +18,7 @@
 					<a href="/product/{item.product.sku}">
 						<img
 							class="aspect-square rounded-lg object-cover"
-							src={item.product.image}
+							src={item.product.image || `/images/product/${item.product.sku}.jpg`}
 							alt={item.product.name}
 						/>
 					</a>

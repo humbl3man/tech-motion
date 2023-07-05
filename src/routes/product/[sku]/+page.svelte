@@ -13,11 +13,11 @@
 </script>
 
 <Container>
-	<section class="grid gap-8 sm:grid-cols-[minmax(200px,800px)_1fr]">
+	<section class="flex gap-8">
 		<div>
 			<img
-				class="h-full w-full rounded-lg object-cover"
-				src={product.image}
+				class="rounded-lg object-contain"
+				src={product.image || `/images/product/${product.sku}.jpg`}
 				alt={product.name}
 			/>
 		</div>
