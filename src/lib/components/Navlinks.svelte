@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
+	import { page } from '$app/stores';
 	import { createEventDispatcher } from 'svelte';
+	import IconCart from '~icons/mdi/cart';
 
 	export let isUserLoggedIn: boolean;
 
@@ -10,6 +12,8 @@
 	function clickHandler() {
 		dispatch('click');
 	}
+	$: ({ cartCount } = $page.data);
+	$: console.log(cartCount);
 </script>
 
 <ul class="flex flex-col gap-4 dark:text-slate-300 sm:flex-row">
@@ -47,8 +51,17 @@
 				<a
 					href="/cart"
 					class="block w-full p-1 sm:inline-block sm:w-auto sm:p-0"
-					on:click={clickHandler}>Cart</a
+					on:click={clickHandler}
 				>
+					<div class="relative">
+						<IconCart class="text-[22px]" />
+						<span
+							class="absolute bottom-0 right-[-4px] inline-flex h-[16px] w-[16px] items-center justify-center rounded-full bg-orange-300 text-[11px] text-black"
+							>{cartCount}</span
+						>
+						<span class="sr-only">Cart</span>
+					</div>
+				</a>
 			</li>
 			<li
 				class="mt-4 flex items-center gap-2 border-t p-1 pt-8 dark:border-slate-500/80 sm:ml-8 sm:mt-0 sm:w-auto sm:border-t-0 sm:p-0"
