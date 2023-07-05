@@ -20,6 +20,7 @@
 							class="aspect-square rounded-lg object-cover"
 							src={item.product.image || `/images/product/${item.product.sku}.jpg`}
 							alt={item.product.name}
+							loading="lazy"
 						/>
 					</a>
 				</div>

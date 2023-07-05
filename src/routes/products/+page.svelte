@@ -8,7 +8,7 @@
 
 <div class="container mx-auto max-w-screen-xl px-4">
 	<h1 class="mb-8 text-4xl">All Products</h1>
-	<div class="grid grid-cols-2 gap-8 sm:grid-cols-3 md:grid-cols-4">
+	<div class="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-4">
 		{#each sortedProducts as product (product.sku)}
 			<a href="/product/{product.sku}">
 				<div class="h-56">
@@ -16,6 +16,7 @@
 						src={product.image || `/images/product/${product.sku}.jpg`}
 						alt={product.name}
 						class="h-full w-full rounded-lg object-cover"
+						loading="lazy"
 					/>
 				</div>
 				<div class="mt-4 font-semibold dark:text-slate-50">{product.name}</div>
