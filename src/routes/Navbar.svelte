@@ -24,16 +24,14 @@
 		<div class="flex items-center justify-between gap-4">
 			<a
 				href="/"
-				class="font-serif text-2xl dark:text-white sm:ml-0">TechMotion</a
+				class="font-serif text-3xl dark:text-white sm:ml-0">TechMotion</a
 			>
 			<!-- Desktop Links -->
 			<div
 				class="hidden sm:block"
 				id="desktop-navigation"
 			>
-				<nav class="flex gap-8 px-0 py-0">
-					<Navlinks {isUserLoggedIn} />
-				</nav>
+				<Navlinks {isUserLoggedIn} />
 			</div>
 			<!-- Mobile Menu Toggle -->
 			<button

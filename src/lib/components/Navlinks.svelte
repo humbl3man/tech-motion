@@ -4,6 +4,7 @@
 	import { page } from '$app/stores';
 	import { createEventDispatcher } from 'svelte';
 	import IconCart from '~icons/mdi/cart';
+	import IconPerson from '~icons/mdi/person';
 
 	export let isUserLoggedIn: boolean;
 
@@ -16,44 +17,49 @@
 	$: console.log(cartCount);
 </script>
 
-<ul class="flex flex-col gap-4 dark:text-slate-300 sm:flex-row">
-	<li>
-		<a
-			href="/"
-			class="block w-full p-1 sm:inline-block sm:w-auto sm:p-0"
-			on:click={clickHandler}>Home</a
-		>
-	</li>
-	<li>
-		<a
-			href="/about"
-			class="block w-full p-1 sm:inline-block sm:w-auto sm:p-0"
-			on:click={clickHandler}>About</a
-		>
-	</li>
-	<li>
-		<a
-			href="/products"
-			class="block w-full p-1 sm:inline-block sm:w-auto sm:p-0"
-			on:click={clickHandler}>Products</a
-		>
-	</li>
-	<li>
-		<a
-			href="/contact"
-			class="block w-full p-1 sm:inline-block sm:w-auto sm:p-0"
-			on:click={clickHandler}>Contact</a
-		>
-	</li>
-	<div class="flex flex-col gap-4 sm:flex-row">
+<nav>
+	<ul class="flex flex-col gap-4 dark:text-slate-300 sm:flex-row sm:items-center">
+		<li>
+			<a
+				href="/"
+				class="block w-full p-1 sm:inline-block sm:w-auto sm:p-0"
+				on:click={clickHandler}>Home</a
+			>
+		</li>
+		<li>
+			<a
+				href="/about"
+				class="block w-full p-1 sm:inline-block sm:w-auto sm:p-0"
+				on:click={clickHandler}>About</a
+			>
+		</li>
+		<li>
+			<a
+				href="/products"
+				class="block w-full p-1 sm:inline-block sm:w-auto sm:p-0"
+				on:click={clickHandler}>Products</a
+			>
+		</li>
+		<li>
+			<a
+				href="/contact"
+				class="block w-full p-1 sm:inline-block sm:w-auto sm:p-0"
+				on:click={clickHandler}>Contact</a
+			>
+		</li>
+		<!-- Cart -->
 		{#if isUserLoggedIn}
 			<li>
 				<a
 					href="/cart"
-					class="block w-full p-1 sm:inline-block sm:w-auto sm:p-0"
+					class="inline-block p-1 sm:w-auto sm:p-0"
 					on:click={clickHandler}
 				>
-					<div class="relative">
+					<div class="relative flex gap-2 sm:block">
+						<span
+							class="sm:hidden"
+							aria-hidden="true">Cart</span
+						>
 						<IconCart
 							class="text-[22px]"
 							aria-hidden="true"
@@ -66,36 +72,34 @@
 					</div>
 				</a>
 			</li>
-			<li
-				class="mt-4 flex items-center gap-2 border-t p-1 pt-8 dark:border-slate-500/80 sm:ml-8 sm:mt-0 sm:w-auto sm:border-t-0 sm:p-0"
-			>
+		{/if}
+		<!-- account/login -->
+		{#if isUserLoggedIn}
+			<li>
 				<a
 					href="/account"
-					class=""
-					on:click={clickHandler}>Account</a
+					class="flex gap-2 sm:block"
+					on:click={clickHandler}
 				>
-				<form
-					action="/account?/logout"
-					method="post"
-					use:enhance={() => {
-						return async ({ result }) => {
-							await invalidateAll();
-							await applyAction(result);
-						};
-					}}
-				>
-					(<button
-						type="submit"
-						class="underline">Logout</button
-					>)
-				</form>
+					<span
+						class="sm:hidden"
+						aria-hidden="true">Account</span
+					>
+					<IconPerson
+						class="text-[22px]"
+						aria-hidden="true"
+					/>
+					<span class="sr-only">Account</span>
+				</a>
 			</li>
 		{:else}
-			<a
-				href="/login"
-				class="block w-full p-1 sm:inline-block sm:w-auto sm:p-0"
-				on:click={clickHandler}>Login</a
-			>
+			<li>
+				<a
+					href="/login"
+					class="block w-full p-1 sm:inline-block sm:w-auto sm:p-0"
+					on:click={clickHandler}>Login</a
+				>
+			</li>
 		{/if}
-	</div>
-</ul>
+	</ul>
+</nav>
