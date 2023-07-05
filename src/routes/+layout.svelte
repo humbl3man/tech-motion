@@ -24,6 +24,6 @@
 	/>
 </svelte:head>
 <Navbar {isUserLoggedIn} />
-<main>
+<main class="mt-12">
 	<slot />
 </main>

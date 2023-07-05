@@ -1,5 +1,5 @@
 <section>
-	<div class="mx-auto max-w-screen-xl px-4 py-8 lg:px-6 lg:py-16">
+	<div class="mx-auto max-w-screen-xl px-4 pb-8 lg:px-6 lg:pb-16">
 		<div class="max-w-screen-lg sm:text-lg">
 			<h1 class="mb-6 text-4xl font-bold tracking-tight">Welcome to TechMotion</h1>
 			<p class="mb-4">
