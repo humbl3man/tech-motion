@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Container from '$lib/components/Container.svelte';
 	import Navlinks from '$lib/components/Navlinks.svelte';
+	import Menu from '~icons/mdi/menu';
 
 	export let isUserLoggedIn: boolean;
 	let headerHeight: number = 0;
@@ -38,8 +39,14 @@
 			<button
 				type="button"
 				class="dark:text-slate-50 sm:hidden"
-				on:click={toggleMenuOpen}>Menu</button
+				on:click={toggleMenuOpen}
 			>
+				<Menu
+					class="h-8 w-8"
+					aria-hidden="true"
+				/>
+				<span class="sr-only"> Menu </span>
+			</button>
 		</div>
 	</Container>
 </header>

@@ -54,7 +54,10 @@
 					on:click={clickHandler}
 				>
 					<div class="relative">
-						<IconCart class="text-[22px]" />
+						<IconCart
+							class="text-[22px]"
+							aria-hidden="true"
+						/>
 						<span
 							class="absolute bottom-0 right-[-4px] inline-flex h-[16px] w-[16px] items-center justify-center rounded-full bg-orange-300 text-[11px] text-black"
 							>{cartCount}</span
