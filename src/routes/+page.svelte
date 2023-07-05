@@ -1,5 +1,4 @@
 <script lang="ts">
-	import heroImage from '$lib/assets/images/hero.jpg';
 	import headphonesImage from '$lib/assets/images/hp-headphones.jpg';
 	import smartwatchImage from '$lib/assets/images/hp-smartwatches.jpg';
 	import smartscaleImage from '$lib/assets/images/hp-smartscales.jpg';
