@@ -1,8 +1,7 @@
 <script lang="ts">
-	import headphonesImage from '$lib/assets/images/hp-headphones.jpg';
-	import smartwatchImage from '$lib/assets/images/hp-smartwatches.jpg';
-	import smartscaleImage from '$lib/assets/images/hp-smartscales.jpg';
-	import bikesImage from '$lib/assets/images/hp-bikes.jpg';
+	import { slugify } from '$lib/utils/slugify.js';
+
+	export let data;
 </script>
 
 <section class="bg-white dark:bg-gray-900">
@@ -41,64 +40,24 @@
 <section class="my-12">
 	<div class="container mx-auto px-4">
 		<h2 class="mb-8 text-center text-3xl">Shop by Category</h2>
-		<!-- row1 -->
-		<div class="grid grid-cols-2 gap-10 md:grid-cols-4">
-			<article>
-				<a
-					href="/products/headphones"
-					class="group block h-full text-slate-800 hover:text-slate-900"
-				>
-					<img
-						src={headphonesImage}
-						class="h-full w-full rounded-lg object-cover object-center transition-opacity duration-300 group-hover:opacity-80"
-						alt=""
-						loading="lazy"
-					/>
-					<div class="mt-4 text-center dark:text-slate-100">Wireless Headphones</div>
-				</a>
-			</article>
-			<article>
-				<a
-					href="/products/scales"
-					class="group block h-full text-slate-800"
-				>
-					<img
-						src={smartscaleImage}
-						class="h-full w-full rounded-lg object-cover object-center transition-opacity duration-300 group-hover:opacity-80"
-						alt=""
-						loading="lazy"
-					/>
-					<div class="mt-4 text-center dark:text-slate-100">Smart Scales</div>
-				</a>
-			</article>
-			<article>
-				<a
-					href="/products/watches"
-					class="group block h-full text-slate-800"
-				>
-					<img
-						src={smartwatchImage}
-						class="h-full w-full rounded-lg object-cover object-center transition-opacity duration-300 group-hover:opacity-80"
-						alt=""
-						loading="lazy"
-					/>
-					<div class="mt-4 text-center dark:text-slate-100">Smart Watches</div>
-				</a>
-			</article>
-			<article>
-				<a
-					href="/products/bikes"
-					class="group block h-full text-slate-800"
-				>
-					<img
-						src={bikesImage}
-						class="h-full w-full rounded-lg object-cover object-center transition-opacity duration-300 group-hover:opacity-80"
-						alt=""
-						loading="lazy"
-					/>
-					<div class="mt-4 text-center dark:text-slate-100">Stationary Bikes</div>
-				</a>
-			</article>
+
+		<div class="grid grid-cols-2 gap-10 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+			{#each data.categories as category (category.id)}
+				<article>
+					<a
+						href="/products/{slugify(category.name)}"
+						class="group block h-64 pb-8 text-slate-800"
+					>
+						<img
+							src="/images/category/{category.id}.jpg"
+							class="h-full w-full rounded-lg object-cover transition-opacity duration-300 group-hover:opacity-80"
+							alt=""
+							loading="lazy"
+						/>
+						<div class="mt-4 text-center dark:text-slate-100">{category.name}</div>
+					</a>
+				</article>
+			{/each}
 		</div>
 	</div>
 </section>
