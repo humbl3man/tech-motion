@@ -48,6 +48,13 @@ export const actions = {
 		}
 
 		const addToCartSku = Number(form.data.sku);
+		const cart = await db.cart.findUnique({ where: { userId: event.locals.user.email } });
+		const cartItem = await db.cartItem.findFirst({
+			where: {
+				productId: addToCartSku,
+				cartId: cart?.id
+			}
+		});
 
 		await db.cart.update({
 			where: {
@@ -57,7 +64,7 @@ export const actions = {
 				items: {
 					upsert: {
 						where: {
-							productId: addToCartSku
+							id: cartItem?.id ?? 0
 						},
 						create: {
 							quantity: 1,

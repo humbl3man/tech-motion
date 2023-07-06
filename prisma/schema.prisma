@@ -28,7 +28,7 @@ model CartItem {
   cart      Cart    @relation(fields: [cartId], references: [id])
   cartId    Int
   product   Product @relation(fields: [productId], references: [sku])
-  productId Int     @unique
+  productId Int
 }
 
 model Cart {
