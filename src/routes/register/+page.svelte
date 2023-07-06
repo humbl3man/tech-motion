@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { applyAction, enhance } from '$app/forms';
-	import { invalidateAll } from '$app/navigation';
 	import Loader from '$lib/components/Loader.svelte';
 	import { superForm } from 'sveltekit-superforms/client';
 
@@ -8,26 +6,19 @@
 	export let {
 		form: loginForm,
 		errors,
-		message
+		message,
+		enhance,
+		submitting
 	} = superForm(data.form, {
 		taintedMessage: 'Are you sure you want to leave?'
 	});
-
-	let isProcesing = false;
 </script>
 
 <div class="container mx-auto mt-12 max-w-md px-4">
 	<h1 class="mb-8 text-4xl">Register</h1>
 	<form
 		method="post"
-		use:enhance={() => {
-			isProcesing = true;
-			return async ({ result }) => {
-				await invalidateAll();
-				await applyAction(result);
-				isProcesing = false;
-			};
-		}}
+		use:enhance
 	>
 		<div class="flex flex-col gap-6">
 			<div class="flex flex-col gap-2">
@@ -77,9 +68,9 @@
 				<button
 					type="submit"
 					class="btn w-full sm:w-1/2"
-					disabled={isProcesing}
+					disabled={$submitting}
 				>
-					{#if isProcesing}
+					{#if $submitting}
 						<Loader />
 						Processing...
 					{:else}
