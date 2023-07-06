@@ -37,7 +37,7 @@
 
 <!-- Categories -->
 
-<section class="my-12">
+<!-- <section class="my-12">
 	<div class="container mx-auto px-4">
 		<h2 class="mb-8 text-center text-3xl">Shop by Category</h2>
 
@@ -60,4 +60,4 @@
 			{/each}
 		</div>
 	</div>
-</section>
+</section> -->
