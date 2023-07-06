@@ -20,7 +20,7 @@
 	class="group bg-indigo-100/10 py-6 backdrop-blur-md"
 	use:getHeaderHeight
 >
-	<Container>
+	<Container size="wide">
 		<div class="flex items-center justify-between gap-4">
 			<a
 				href="/"

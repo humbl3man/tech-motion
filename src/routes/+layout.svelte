@@ -1,8 +1,6 @@
 <script lang="ts">
-	import { applyAction, enhance } from '$app/forms';
-	import { invalidateAll } from '$app/navigation';
+	import Navbar from '$lib/components/Navbar.svelte';
 	import '../app.css';
-	import Navbar from './Navbar.svelte';
 
 	export let data;
 	$: ({ user } = data);
