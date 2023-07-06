@@ -41,7 +41,6 @@
 						return async ({ result }) => {
 							await invalidateAll();
 							await applyAction(result);
-							isProcessing = false;
 							goto('/cart');
 						};
 					}}
