@@ -27,6 +27,6 @@ export const actions = {
 			return fail(400, { form });
 		}
 
-		return message(form, 'Thank you for your message! We will get back to you shortly.');
+		return message(form, 'We received your message and we will get back to you shortly.');
 	}
 };

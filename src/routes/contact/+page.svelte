@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
+	import Alert from '$lib/components/Alert.svelte';
 	import { superForm } from 'sveltekit-superforms/client';
 
 	export let data;
@@ -12,7 +13,10 @@
 <div class="container mx-auto mt-12 max-w-md px-4">
 	<h1 class="mb-8 text-4xl">Contact Us</h1>
 	{#if $message}
-		<div class="mb-4 text-sm text-green-600">{$message}</div>
+		<Alert type="success">
+			<svelte:fragment slot="title">Thank you!</svelte:fragment>
+			<svelte:fragment slot="message">{$message}</svelte:fragment>
+		</Alert>
 	{:else}
 		<form
 			method="post"
