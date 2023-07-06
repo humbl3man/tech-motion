@@ -15,19 +15,20 @@ export const load = async (event) => {
 	const cart = await db.cart.findUnique({
 		where: {
 			userId: event.locals.user.email
+		}
+	});
+
+	const cartItems = await db.cartItem.findMany({
+		where: {
+			cartId: cart?.id
 		},
-		select: {
-			items: {
-				select: {
-					quantity: true,
-					product: true
-				}
-			}
+		include: {
+			product: true
 		}
 	});
 
 	return {
-		cart
+		cartItems
 	};
 };
 
