@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { formatPrice } from '$lib/utils/formatPrice';
+	import { slugify } from '$lib/utils/slugify';
 
 	export let data;
 	$: ({ products } = data);
@@ -10,7 +11,7 @@
 	<h1 class="mb-8 text-4xl">All Products</h1>
 	<div class="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-4">
 		{#each sortedProducts as product (product.sku)}
-			<a href="/product/{product.sku}">
+			<a href="/product/{product.sku}-{slugify(product.name)}">
 				<div class="h-56">
 					<img
 						src={product.image || `/images/product/${product.sku}.jpg`}
