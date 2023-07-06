@@ -35,6 +35,10 @@
 	.btn {
 		@apply rounded-lg bg-blue-700 text-base font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800;
 		@apply px-5 py-2.5;
+		@apply text-center;
+	}
+	.btn.btn-alt {
+		@apply rounded-full bg-yellow-400 text-black hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 dark:focus:ring-yellow-900;
 	}
 	.btn.btn-xs {
 		@apply px-3 py-2 text-xs;
@@ -51,8 +55,13 @@
 	.btn:disabled {
 		@apply cursor-not-allowed bg-blue-400 opacity-80 dark:bg-blue-500;
 	}
+	.btn.btn-with-icon {
+		@apply inline-flex items-center justify-center gap-2;
+	}
 
 	.input {
 		@apply block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500;
+		@apply read-only:cursor-not-allowed read-only:opacity-50;
+		@apply disabled:cursor-not-allowed disabled:opacity-50;
 	}
 }

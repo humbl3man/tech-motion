@@ -14,7 +14,6 @@
 		dispatch('click');
 	}
 	$: ({ cartCount } = $page.data);
-	$: console.log(cartCount);
 </script>
 
 <nav>

@@ -16,7 +16,7 @@
 		<div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-x-4 sm:space-y-0">
 			<a
 				href="/products"
-				class="btn btn-xl inline-flex items-center justify-center"
+				class="btn btn-xl btn-with-icon"
 			>
 				View our Catalog
 				<svg
