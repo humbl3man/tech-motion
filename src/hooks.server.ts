@@ -15,6 +15,7 @@ const auth: Handle = async ({ event, resolve }) => {
 			email: true,
 			firstName: true,
 			lastName: true,
+			phoneNumber: true,
 			roleId: true
 		}
 	});
@@ -24,6 +25,7 @@ const auth: Handle = async ({ event, resolve }) => {
 			email: user.email,
 			firstName: user.firstName || '',
 			lastName: user.lastName || '',
+			phoneNumber: user.phoneNumber || '',
 			role: user.roleId
 		};
 	}
