@@ -4,8 +4,8 @@ import { message, superValidate } from 'sveltekit-superforms/server';
 import { db } from '$lib/db.js';
 
 const accountSchema = z.object({
-	firstName: z.string().min(1, 'Please enter at least 1 character').optional(),
-	lastName: z.string().min(1, 'Please enter at least 1 character').optional(),
+	firstName: z.string().optional(),
+	lastName: z.string().optional(),
 	phoneNumber: z.string().optional()
 });
 
