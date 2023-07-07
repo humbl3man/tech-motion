@@ -14,7 +14,7 @@
 
 <article>
 	<a href="/product/{product.sku}-{slugify(product.name)}">
-		<div class="h-[320px]">
+		<div>
 			<img
 				src={product.image}
 				alt={product.name}
