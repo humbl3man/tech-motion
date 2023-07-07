@@ -16,7 +16,7 @@
 	<a href="/product/{product.sku}-{slugify(product.name)}">
 		<div class="h-[320px]">
 			<img
-				src={product.image || `/images/product/${product.sku}.jpg`}
+				src={product.image}
 				alt={product.name}
 				class="h-full w-full rounded-lg object-cover"
 				loading="lazy"

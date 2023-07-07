@@ -17,7 +17,7 @@
 		<div>
 			<img
 				class="rounded-lg object-contain"
-				src={product.image || `/images/product/${product.sku}.jpg`}
+				src={product.image}
 				alt={product.name}
 			/>
 		</div>
