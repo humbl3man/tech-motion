@@ -13,7 +13,7 @@
 </script>
 
 <Container>
-	<section class="flex gap-8">
+	<section class="flex flex-col gap-8 sm:flex-row">
 		<div>
 			<img
 				class="rounded-lg object-contain"
