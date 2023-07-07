@@ -11,6 +11,7 @@
 		total += item.quantity * item.product?.price;
 		return total;
 	}, 0);
+	$: isCheckoutDisabled = subtotal <= 0;
 </script>
 
 <div class="mx-auto mb-16 max-w-screen-md px-4">
@@ -70,21 +71,21 @@
 			</div>
 		</div>
 	{:else}
-		<p>Cart is empty.</p>
+		<p>Your Shopping Cart is empty.</p>
 	{/each}
-	{#if subtotal > 0}
-		<div class="mt-12">
-			<div class="mb-1 flex items-center justify-between text-lg font-semibold text-slate-800 dark:text-slate-200">
-				<span>Subtotal</span>
-				<span>{formatPrice(subtotal)}</span>
-			</div>
-			<div class="text-slate-600 dark:text-slate-400">Shipping and taxes calculated at checkout.</div>
+	<div class="mt-12">
+		<div class="mb-1 flex items-center justify-between text-lg font-semibold text-slate-800 dark:text-slate-200">
+			<span>Subtotal</span>
+			<span>{formatPrice(subtotal)}</span>
+		</div>
+		<div class="text-slate-600 dark:text-slate-400">Shipping and taxes calculated at checkout.</div>
+		{#if !isCheckoutDisabled}
 			<div class="mt-6">
 				<a
 					href="/checkout"
 					class="btn block w-full">Checkout</a
 				>
 			</div>
-		</div>
-	{/if}
+		{/if}
+	</div>
 </div>
