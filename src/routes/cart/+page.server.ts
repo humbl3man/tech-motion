@@ -12,11 +12,24 @@ export const load = async (event) => {
 		throw redirect(303, '/products');
 	}
 
-	const cart = await db.cart.findUnique({
+	let cart = await db.cart.findUnique({
 		where: {
 			userId: event.locals.user.email
 		}
 	});
+
+	// if for some reason cart is deleted, create one and return empty array of cart items
+	if (!cart) {
+		cart = await db.cart.create({
+			data: {
+				userId: event.locals.user.email
+			}
+		});
+
+		return {
+			cartItems: []
+		};
+	}
 
 	const cartItems = await db.cartItem.findMany({
 		where: {

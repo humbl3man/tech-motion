@@ -7,6 +7,7 @@
 	import IconPerson from '~icons/mdi/person';
 
 	export let isUserLoggedIn: boolean;
+	export let isAdminUser: boolean;
 
 	const dispatch = createEventDispatcher();
 
@@ -46,6 +47,15 @@
 				on:click={clickHandler}>Contact</a
 			>
 		</li>
+		{#if isUserLoggedIn && isAdminUser}
+			<li>
+				<a
+					href="/admin"
+					class="block w-full p-1 sm:inline-block sm:w-auto sm:p-0"
+					on:click={clickHandler}>Admin</a
+				>
+			</li>
+		{/if}
 		<!-- Cart -->
 		{#if isUserLoggedIn}
 			<li>

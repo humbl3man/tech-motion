@@ -4,7 +4,6 @@
 
 	export let data;
 	$: ({ user } = data);
-	$: isUserLoggedIn = Boolean(user);
 </script>
 
 <svelte:head>
@@ -20,8 +19,9 @@
 		href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@600&display=swap"
 		rel="stylesheet"
 	/>
+	<title>TechMotion</title>
 </svelte:head>
-<Navbar {isUserLoggedIn} />
+<Navbar />
 <main class="my-12">
 	<slot />
 </main>

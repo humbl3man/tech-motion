@@ -1,9 +1,10 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import Container from '$lib/components/Container.svelte';
 	import Navlinks from '$lib/components/Navlinks.svelte';
+	import { Role } from '$lib/constants/Role';
 	import Menu from '~icons/mdi/menu';
 
-	export let isUserLoggedIn: boolean;
 	let headerHeight: number = 0;
 	let menuOpen = false;
 
@@ -14,6 +15,8 @@
 	function getHeaderHeight(element: HTMLElement) {
 		headerHeight = element.clientHeight;
 	}
+	$: isUserLoggedIn = !!$page.data.user;
+	$: isAdminUser = $page.data?.user?.role === Role.ADMIN;
 </script>
 
 <header
@@ -31,7 +34,10 @@
 				class="hidden sm:block"
 				id="desktop-navigation"
 			>
-				<Navlinks {isUserLoggedIn} />
+				<Navlinks
+					{isUserLoggedIn}
+					{isAdminUser}
+				/>
 			</div>
 			<!-- Mobile Menu Toggle -->
 			<button
@@ -59,6 +65,7 @@
 >
 	<Navlinks
 		{isUserLoggedIn}
+		{isAdminUser}
 		on:click={() => (menuOpen = false)}
 	/>
 </div>

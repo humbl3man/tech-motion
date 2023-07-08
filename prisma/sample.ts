@@ -72,3 +72,34 @@ export const products = [
 		price: 10999
 	}
 ];
+
+export const users = [
+	{
+		email: 'vamvop@sil.io',
+		firstName: 'Owen',
+		lastName: 'Williamson',
+		phoneNumber: '123-324-1234',
+		password: 'test123'
+	},
+	{
+		email: 'fu@bunitol.hu',
+		firstName: 'Craig',
+		lastName: 'Lee',
+		phoneNumber: '123-324-1234',
+		password: 'test123'
+	},
+	{
+		email: 'ejopa@dufu.td',
+		firstName: 'Derrick',
+		lastName: 'Russell',
+		phoneNumber: '123-324-1234',
+		password: 'test123'
+	},
+	{
+		email: 'cud@fol.cg',
+		firstName: 'Chris',
+		lastName: 'Morgan',
+		phoneNumber: '123-324-1234',
+		password: 'test123'
+	}
+];

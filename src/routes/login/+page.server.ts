@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { db } from '$lib/db';
+import { Role } from '$lib/constants/Role.js';
 
 const schema = z.object({
 	email: z
@@ -59,6 +60,10 @@ export const actions = {
 			throw error(500, 'Something went wrong');
 		}
 
-		throw redirect(303, '/account');
+		if (user.roleId === Role.ADMIN) {
+			throw redirect(303, '/admin');
+		} else {
+			throw redirect(303, '/account');
+		}
 	}
 };
