@@ -1,5 +1,21 @@
 <script lang="ts">
-	import { Button, GradientButton, Input, Label, Modal, Textarea } from 'flowbite-svelte';
+	import { formatPrice } from '$lib/utils/formatPrice.js';
+	import {
+		GradientButton,
+		Input,
+		Label,
+		Modal,
+		Textarea,
+		Table,
+		TableBody,
+		TableBodyCell,
+		TableBodyRow,
+		TableHead,
+		TableHeadCell,
+		Button
+	} from 'flowbite-svelte';
+	import {} from 'flowbite-svelte';
+
 	import { superForm } from 'sveltekit-superforms/client';
 
 	export let data;
@@ -13,19 +29,19 @@
 <header class="mb-12">
 	<h1 class="mb-4 text-2xl">Manage Products</h1>
 
-	<GradientButton
+	<Button
 		type="button"
-		color="purpleToBlue"
-		on:click={() => (createProductModal = true)}>Create new product</GradientButton
+		color="light"
+		on:click={() => (createProductModal = true)}>Create Product</Button
 	>
 </header>
 
 <Modal
 	bind:open={createProductModal}
-	size="xs"
+	size="sm"
 	autoclose={false}
 >
-	<h2 class="mb-4 text-xl dark:text-white">Create New Product</h2>
+	<h2 class="mb-2 text-xl dark:text-white">Create Product</h2>
 	<form
 		method="post"
 		action="?/create"
@@ -55,67 +71,63 @@
 				rows={4}
 			/>
 		</Label>
-		<GradientButton
-			color="purpleToBlue"
+		<Button
+			color="blue"
 			type="submit"
-			class="w-full">Create</GradientButton
+			class="w-full">Create</Button
 		>
 	</form>
 </Modal>
 
 <section class="dark:text-slate-300">
-	{#each products as product (product.sku)}
-		<div class="flex justify-between gap-4 border-b py-6 last:border-0 dark:border-slate-400/10">
-			<div class="flex gap-4">
-				<div class="w-24">
-					<img
-						class="h-full w-full object-cover"
-						src={product.image}
-						alt={product.name}
-					/>
-				</div>
-				<div>
-					<p class="dark:text-white">SKU: {product.sku}</p>
-					<p class="dark:text-white">Name: {product.name}</p>
-				</div>
-			</div>
-			<!-- <div class="text-right text-sm">
-				<form
-					method="post"
-					action="?/delete_user"
-					class="mt-2"
-					use:enhance={() => {
-						deleteUserRecords = [...deleteUserRecords, user.email];
-						return async ({ result }) => {
-							await invalidateAll();
-							await applyAction(result);
-							deleteUserRecords = deleteUserRecords.filter((record) => !record.includes(user.email));
-						};
-					}}
-				>
-					<input
-						type="hidden"
-						name="user_email"
-						value={user.email}
-					/>
-					<Button
-						color="red"
-						outline
-						disabled={deleteUserRecords.includes(user.email)}
-						size="xs"
-						type="submit"
-					>
-						{#if deleteUserRecords.includes(user.email)}
-							<Spinner
-								size="3"
-								class="mr-4"
-							/> Deleting...
-						{:else}
-							Delete User
-						{/if}
-					</Button>
-				</form>
-			</div> -->
-		</div>
-	{/each}
+	<Table shadow>
+		<TableHead>
+			<TableHeadCell>SKU</TableHeadCell>
+			<TableHeadCell>Product Name</TableHeadCell>
+			<TableHeadCell>Price</TableHeadCell>
+			<TableHeadCell />
+			<TableHeadCell />
+		</TableHead>
+		<TableBody tableBodyClass="divide-y">
+			{#each products as product (product.sku)}
+				<TableBodyRow>
+					<TableBodyCell>
+						{product.sku}
+					</TableBodyCell>
+					<TableBodyCell>
+						{product.name}
+					</TableBodyCell>
+					<TableBodyCell>
+						{formatPrice(product.price)}
+					</TableBodyCell>
+					<TableBodyCell>
+						<form
+							method="post"
+							action="?/update"
+						>
+							<Button
+								size="xs"
+								type="button"
+								outline
+								color="primary">Update</Button
+							>
+						</form>
+					</TableBodyCell>
+					<TableBodyCell>
+						<form
+							method="post"
+							action="?/delete"
+						>
+							<Button
+								size="xs"
+								type="button"
+								outline
+								color="red">Delete</Button
+							>
+						</form>
+					</TableBodyCell>
+				</TableBodyRow>
+			{/each}
+		</TableBody>
+	</Table>
 </section>

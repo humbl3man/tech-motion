@@ -1,31 +1,54 @@
 <script>
 	import { page } from '$app/stores';
 	import Container from '$lib/components/Container.svelte';
+	import { Sidebar, SidebarGroup, SidebarWrapper, SidebarItem } from 'flowbite-svelte';
+	import IconDashboard from '~icons/mdi/view-dashboard';
+	import IconPerson from '~icons/mdi/person';
+	import IconProduct from '~icons/mdi/cube-outline';
+	let spanClass = 'flex-1 ml-3 whitespace-nowrap';
+	$: activeUrl = $page.url.pathname;
 </script>
 
 <Container>
 	<h1 class="mb-8 text-4xl font-bold">Admin Page</h1>
 	<section class="flex flex-col gap-10 md:flex-row">
-		<aside class="grow-0 rounded-md bg-slate-200 px-6 py-8 shadow-sm dark:bg-slate-700">
-			<ul>
-				<li>
-					<a
-						href="/admin/users"
-						class="block w-full p-3 dark:hover:bg-slate-600 {$page.route.id === '/admin/users'
-							? 'text-indigo-800 dark:text-indigo-300'
-							: ''}">Manage Users</a
+		<Sidebar>
+			<SidebarWrapper>
+				<SidebarGroup>
+					<SidebarItem
+						href="/admin"
+						label="Dashboard"
+						active={activeUrl === '/admin'}
+						{spanClass}
 					>
-				</li>
-				<li class="border-t dark:border-slate-400/25">
-					<a
+						<svelte:fragment slot="icon">
+							<IconDashboard />
+						</svelte:fragment>
+					</SidebarItem>
+					<SidebarItem
 						href="/admin/products"
-						class="block w-full p-3 dark:hover:bg-slate-600 {$page.route.id === '/admin/products'
-							? 'text-indigo-800 dark:text-indigo-300'
-							: ''}">Manage Products</a
+						label="Manage Products"
+						active={activeUrl === '/admin/products'}
+						{spanClass}
 					>
-				</li>
-			</ul>
-		</aside>
+						<svelte:fragment slot="icon">
+							<IconProduct />
+						</svelte:fragment>
+					</SidebarItem>
+					<SidebarItem
+						href="/admin/users"
+						label="Manage Users"
+						active={activeUrl === '/admin/users'}
+						{spanClass}
+					>
+						<svelte:fragment slot="icon">
+							<IconPerson />
+						</svelte:fragment>
+					</SidebarItem>
+				</SidebarGroup>
+			</SidebarWrapper>
+		</Sidebar>
+
 		<div class="grow">
 			<slot />
 		</div>
