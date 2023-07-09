@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { slugify } from '$lib/utils/slugify.js';
+	import { GradientButton } from 'flowbite-svelte';
 
 	export let data;
 </script>
@@ -15,9 +16,11 @@
 				equipment, apparel, and accessories that will take your workouts to the next level.
 			</p>
 			<div class="">
-				<a
+				<GradientButton
+					color="purpleToBlue"
+					shadow
 					href="/products"
-					class="btn btn-xl btn-with-icon"
+					class="btn btn-xl btn-with-icon text-base"
 				>
 					Shop Now
 					<svg
@@ -32,7 +35,7 @@
 							clip-rule="evenodd"
 						/></svg
 					>
-				</a>
+				</GradientButton>
 			</div>
 		</div>
 		<div class="hidden grow-0 md:block md:max-w-sm lg:max-w-xl">
