@@ -5,32 +5,43 @@
 </script>
 
 <section class="bg-white dark:bg-gray-900">
-	<div class="mx-auto max-w-screen-xl px-4 py-8 text-center lg:py-32">
-		<h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 dark:text-white md:text-5xl lg:text-6xl">
-			Unleash Your Fitness Potential
-		</h1>
-		<p class="mb-8 text-lg font-normal text-gray-500 dark:text-gray-400 sm:px-16 lg:px-48 lg:text-xl">
-			Discover Cutting-Edge Fitness Tech for Your Active Lifestyle
-		</p>
-		<div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-x-4 sm:space-y-0">
-			<a
-				href="/products"
-				class="btn btn-xl btn-with-icon"
-			>
-				View our Catalog
-				<svg
-					aria-hidden="true"
-					class="-mr-1 ml-2 h-5 w-5"
-					fill="currentColor"
-					viewBox="0 0 20 20"
-					xmlns="http://www.w3.org/2000/svg"
-					><path
-						fill-rule="evenodd"
-						d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-						clip-rule="evenodd"
-					/></svg
+	<div class="mx-auto mt-8 flex max-w-screen-2xl gap-8 px-4 lg:mt-32">
+		<div class="self-center">
+			<h1 class="mb-4 text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white md:text-5xl lg:text-6xl">
+				Unleash Your Fitness Potential
+			</h1>
+			<p class="mb-8 max-w-2xl text-lg font-normal text-gray-500 dark:text-gray-400 lg:text-xl lg:leading-relaxed">
+				TechMotion is your ultimate destination for cutting-edge fitness gear. Discover a curated collection of top-quality
+				equipment, apparel, and accessories that will take your workouts to the next level.
+			</p>
+			<div class="">
+				<a
+					href="/products"
+					class="btn btn-xl btn-with-icon"
 				>
-			</a>
+					Shop Now
+					<svg
+						aria-hidden="true"
+						class="-mr-1 ml-2 h-5 w-5"
+						fill="currentColor"
+						viewBox="0 0 20 20"
+						xmlns="http://www.w3.org/2000/svg"
+						><path
+							fill-rule="evenodd"
+							d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+							clip-rule="evenodd"
+						/></svg
+					>
+				</a>
+			</div>
+		</div>
+		<div class="hidden grow-0 md:block md:max-w-sm lg:max-w-xl">
+			<img
+				src="/images/hero-image.jpg"
+				class="object-fit rounded-lg shadow-md"
+				alt=""
+				aria-hidden="true"
+			/>
 		</div>
 	</div>
 </section>
