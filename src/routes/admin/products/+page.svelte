@@ -76,6 +76,7 @@
 		<Toast
 			color="green"
 			position="bottom-right"
+			contentClass="dark:text-white w-full"
 		>
 			<svelte:fragment slot="icon">
 				<CheckIcon />
