@@ -2,9 +2,11 @@
 	import { applyAction, enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { Button } from 'flowbite-svelte';
 	import { createEventDispatcher } from 'svelte';
 	import IconCart from '~icons/mdi/cart';
 	import IconPerson from '~icons/mdi/person';
+	import GearIcon from '~icons/mdi/gear';
 
 	export let isUserLoggedIn: boolean;
 	export let isAdminUser: boolean;
@@ -47,15 +49,6 @@
 				on:click={clickHandler}>Contact</a
 			>
 		</li>
-		{#if isUserLoggedIn && isAdminUser}
-			<li>
-				<a
-					href="/admin"
-					class="block w-full p-1 sm:inline-block sm:w-auto sm:p-0"
-					on:click={clickHandler}>Admin</a
-				>
-			</li>
-		{/if}
 		<!-- Cart -->
 		{#if isUserLoggedIn}
 			<li>
@@ -108,6 +101,22 @@
 					class="block w-full p-1 sm:inline-block sm:w-auto sm:p-0"
 					on:click={clickHandler}>Login</a
 				>
+			</li>
+		{/if}
+		{#if isUserLoggedIn && isAdminUser}
+			<li class="sm:ml-4">
+				<Button
+					color="purple"
+					outline
+					href="/admin"
+					on:click={clickHandler}
+				>
+					<GearIcon
+						aria-disabled="true"
+						class="mr-2"
+					/>
+					Admin
+				</Button>
 			</li>
 		{/if}
 	</ul>
