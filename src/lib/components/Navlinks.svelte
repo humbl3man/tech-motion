@@ -6,7 +6,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import IconCart from '~icons/mdi/cart';
 	import IconPerson from '~icons/mdi/person';
-	import GearIcon from '~icons/mdi/gear';
+	import IconGear from '~icons/mdi/gear';
 
 	export let isUserLoggedIn: boolean;
 	export let isAdminUser: boolean;
@@ -111,7 +111,7 @@
 					href="/admin"
 					on:click={clickHandler}
 				>
-					<GearIcon
+					<IconGear
 						aria-disabled="true"
 						class="mr-2"
 					/>
