@@ -1,13 +1,7 @@
 <script lang="ts">
+	import type { Product } from '$lib/types';
 	import { formatPrice } from '$lib/utils/formatPrice';
 	import { slugify } from '$lib/utils/slugify';
-
-	type Product = {
-		sku: string | number;
-		name: string;
-		price: number;
-		image?: string;
-	};
 
 	export let product: Product;
 </script>
@@ -18,6 +12,8 @@
 			<img
 				src={product.image}
 				alt={product.name}
+				width={1080}
+				height={1080}
 				class="h-full w-full rounded-lg object-cover"
 				loading="lazy"
 			/>

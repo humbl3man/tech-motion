@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { applyAction, enhance } from '$app/forms';
-	import { invalidateAll } from '$app/navigation';
 	import { page } from '$app/stores';
+	import ProductDeleteForm from '$lib/components/admin/ProductDeleteForm.svelte';
 	import { formatPrice } from '$lib/utils/formatPrice.js';
 	import {
 		Input,
@@ -27,8 +26,6 @@
 	let createProductModal = false;
 	let showCreateProductSuccessToast = false;
 
-	let skusToDelete: Array<string> = [];
-
 	const {
 		form: createFormInstance,
 		errors: createFormErrors,
@@ -38,7 +35,7 @@
 		message: createFormMessage
 	} = superForm(data.createForm, {
 		clearOnSubmit: 'errors-and-message',
-		onResult({ result, formEl }) {
+		onResult({ result }) {
 			if (result.type === 'success') {
 				createFormReset({
 					keepMessage: false,
@@ -187,37 +184,10 @@
 						</form>
 					</TableBodyCell>
 					<TableBodyCell>
-						<form
-							method="post"
-							action="?/delete_product"
-							use:enhance={() => {
-								skusToDelete = [...skusToDelete, product.sku.toString()];
-								return async ({ result }) => {
-									await invalidateAll();
-									await applyAction(result);
-									skusToDelete.filter((s) => s !== product.sku.toString());
-								};
-							}}
-						>
-							<input
-								type="hidden"
-								name="sku"
-								value={product.sku}
-							/>
-							<Button
-								size="xs"
-								type="submit"
-								outline
-								disabled={skusToDelete.includes(product.sku.toString())}
-								color="red"
-							>
-								{#if skusToDelete.includes(product.sku.toString())}
-									Deleting...
-								{:else}
-									Delete
-								{/if}
-							</Button>
-						</form>
+						<ProductDeleteForm
+							{product}
+							form={data.deleteForms.find((f) => f.id === product.sku.toString())}
+						/>
 					</TableBodyCell>
 				</TableBodyRow>
 			{/each}

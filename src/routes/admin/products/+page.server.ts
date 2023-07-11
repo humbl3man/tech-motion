@@ -1,8 +1,10 @@
-import { placeholderProductImage } from '$lib/constants/image.js';
 import { db } from '$lib/db.js';
 import { fail } from '@sveltejs/kit';
-import { message, superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
+import type { SuperValidated } from 'sveltekit-superforms';
+
+import { message, superValidate } from 'sveltekit-superforms/server';
+import { placeholderProductImage } from '$lib/constants/image.js';
 
 const createProductSchema = z.object({
 	name: z
@@ -19,6 +21,10 @@ const createProductSchema = z.object({
 	description: z.string().optional()
 });
 
+const deleteProductSchema = z.object({
+	sku: z.string()
+});
+
 export const load = async (event) => {
 	const allProducts = await db.product.findMany({
 		orderBy: {
@@ -27,10 +33,19 @@ export const load = async (event) => {
 	});
 
 	const createForm = await superValidate(event, createProductSchema);
+	const deleteForms: Array<SuperValidated<typeof deleteProductSchema>> = [];
+
+	allProducts.forEach(async (product) => {
+		const form = await superValidate(deleteProductSchema, {
+			id: product.sku.toString()
+		});
+		deleteForms.push(form);
+	});
 
 	return {
 		allProducts,
-		createForm
+		createForm,
+		deleteForms
 	};
 };
 
@@ -60,21 +75,20 @@ export const actions = {
 		return message(createForm, 'Product created!');
 	},
 	delete_product: async (event) => {
-		const formData = await event.request.formData();
-		const sku = formData.get('sku');
+		const deleteForm = await superValidate(event, deleteProductSchema);
 
-		console.log('DELETE', formData, sku);
-
-		if (!sku) {
-			return fail(400, {
-				message: 'Missing SKU'
+		if (!deleteForm.valid) {
+			return message(deleteForm, 'unable to delete', {
+				status: 400
 			});
 		}
+
+		const sku = +deleteForm.data.sku;
 
 		try {
 			const numberOfCartItemsReferencingProduct = await db.cartItem.count({
 				where: {
-					productId: +sku
+					productId: sku
 				}
 			});
 
@@ -82,25 +96,25 @@ export const actions = {
 			if (numberOfCartItemsReferencingProduct > 0) {
 				await db.cartItem.deleteMany({
 					where: {
-						productId: +sku
+						productId: sku
 					}
 				});
 			}
 
 			await db.product.delete({
 				where: {
-					sku: +sku
+					sku: sku
 				}
 			});
 		} catch (error: any) {
 			console.error(error.message);
-			return fail(500, {
-				message: 'Unable to delete'
+			return message(deleteForm, 'unable to delete', {
+				status: 500
 			});
 		}
 
 		return {
-			message: 'Product deleted'
+			deleteForm
 		};
 	}
 };
