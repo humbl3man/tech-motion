@@ -59,6 +59,9 @@ async function createUsers() {
 				},
 				create: {
 					email: user.email,
+					firstName: user.firstName,
+					lastName: user.lastName,
+					phoneNumber: user.phoneNumber,
 					passwordHash: await bcrypt.hash(user.password, 10),
 					authToken: crypto.randomUUID(),
 					role: {
