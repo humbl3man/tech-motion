@@ -30,7 +30,9 @@
 			{/each}
 			<h1 class="mb-4 text-4xl">{product.name}</h1>
 			<div class="mb-4 text-3xl dark:text-slate-100">{formatPrice(product.price)}</div>
-			<p class="mb-4">{product.description}</p>
+			{#if product.description}
+				<p class="mb-4">{product.description}</p>
+			{/if}
 			<!-- add to cart -->
 			{#if data.showAddToCart}
 				<form

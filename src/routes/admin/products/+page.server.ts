@@ -58,5 +58,49 @@ export const actions = {
 		}
 
 		return message(createForm, 'Product created!');
+	},
+	delete_product: async (event) => {
+		const formData = await event.request.formData();
+		const sku = formData.get('sku');
+
+		console.log('DELETE', formData, sku);
+
+		if (!sku) {
+			return fail(400, {
+				message: 'Missing SKU'
+			});
+		}
+
+		try {
+			const numberOfCartItemsReferencingProduct = await db.cartItem.count({
+				where: {
+					productId: +sku
+				}
+			});
+
+			// delete all cart items and products if at least 1 user cart has this product.
+			if (numberOfCartItemsReferencingProduct > 0) {
+				await db.cartItem.deleteMany({
+					where: {
+						productId: +sku
+					}
+				});
+			}
+
+			await db.product.delete({
+				where: {
+					sku: +sku
+				}
+			});
+		} catch (error: any) {
+			console.error(error.message);
+			return fail(500, {
+				message: 'Unable to delete'
+			});
+		}
+
+		return {
+			message: 'Product deleted'
+		};
 	}
 };
