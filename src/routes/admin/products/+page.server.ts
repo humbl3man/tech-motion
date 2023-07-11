@@ -18,7 +18,7 @@ const createProductSchema = z.object({
 		})
 		.min(100, 'Product price minimum is $1')
 		.max(1000000, 'Product price cannot exceed $10,000'),
-	description: z.string().min(20, 'Description must be at least 20 characters').optional()
+	description: z.string()
 });
 
 const deleteProductSchema = z.object({
