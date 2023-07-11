@@ -1,6 +1,5 @@
 import { Role } from '$lib/constants/Role.js';
 import { db } from '$lib/db';
-import { fail } from '@sveltejs/kit';
 
 export const load = async ({ locals }) => {
 	const allUsersData = await db.user.findMany({
@@ -21,9 +20,9 @@ export const load = async ({ locals }) => {
 			createdAt: true,
 			updatedAt: true,
 			phoneNumber: true,
-			roleId: true,
 			shippingAddress: true,
-			email: true
+			email: true,
+			role: true
 		}
 	});
 	return {

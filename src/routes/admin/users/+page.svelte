@@ -3,7 +3,6 @@
 	import { invalidateAll } from '$app/navigation';
 	import { Button, Spinner, Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell } from 'flowbite-svelte';
 
-	import Loader from '$lib/components/Loader.svelte';
 	import { formatDate } from '$lib/utils/formatDate';
 
 	export let data;
@@ -17,6 +16,7 @@
 	<Table shadow>
 		<TableHead>
 			<TableHeadCell>Email</TableHeadCell>
+			<TableHeadCell>Role</TableHeadCell>
 			<TableHeadCell>First Name</TableHeadCell>
 			<TableHeadCell>Last Name</TableHeadCell>
 			<TableHeadCell>Phone Number</TableHeadCell>
@@ -29,6 +29,9 @@
 				<TableBodyRow>
 					<TableBodyCell>
 						{user.email}
+					</TableBodyCell>
+					<TableBodyCell>
+						{user.role.name}
 					</TableBodyCell>
 					<TableBodyCell>
 						{user.firstName || '(NOT SET)'}
