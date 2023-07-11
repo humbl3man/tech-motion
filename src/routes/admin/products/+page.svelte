@@ -13,15 +13,17 @@
 		TableHead,
 		TableHeadCell,
 		Button,
-		Spinner
+		Spinner,
+		Toast
 	} from 'flowbite-svelte';
-	import {} from 'flowbite-svelte';
 
 	import { superForm } from 'sveltekit-superforms/client';
+	import CheckIcon from '~icons/mdi/check';
 
 	export let data;
 
 	let createProductModal = false;
+	let showCreateProductSuccessToast = false;
 
 	const {
 		form: createFormInstance,
@@ -43,7 +45,10 @@
 					}
 				});
 				createProductModal = false;
-				// TODO: show toast with success message
+				showCreateProductSuccessToast = true;
+				window.setTimeout(() => {
+					showCreateProductSuccessToast = false;
+				}, 10000);
 			}
 		}
 	});
@@ -64,6 +69,20 @@
 		on:click={openCreateProductModal}>Create Product</Button
 	>
 </header>
+
+{#if showCreateProductSuccessToast && $createFormMessage && $page.status === 200}
+	<div class="fixed bottom-4 right-4 z-[9999] w-full px-4">
+		<Toast
+			color="green"
+			position="bottom-right"
+		>
+			<svelte:fragment slot="icon">
+				<CheckIcon />
+			</svelte:fragment>
+			{$createFormMessage}
+		</Toast>
+	</div>
+{/if}
 
 <Modal
 	bind:open={createProductModal}
