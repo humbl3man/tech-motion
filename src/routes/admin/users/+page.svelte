@@ -22,7 +22,7 @@
 			<TableHeadCell>Phone Number</TableHeadCell>
 			<TableHeadCell>Created Date</TableHeadCell>
 			<TableHeadCell>Updated Date</TableHeadCell>
-			<TableHeadCell>Actions</TableHeadCell>
+			<TableHeadCell />
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
 			{#each users as user (user.email)}
