@@ -21,6 +21,8 @@ async function createAdminUser() {
 					email: process.env.ADMIN_EMAIL,
 					passwordHash: await bcrypt.hash(process.env.ADMIN_PASSWORD, 10),
 					authToken: crypto.randomUUID(),
+					firstName: 'Admin',
+					lastName: 'Admin',
 					role: {
 						connect: {
 							// admin role
