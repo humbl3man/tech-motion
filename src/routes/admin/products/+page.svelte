@@ -1,7 +1,7 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import { formatPrice } from '$lib/utils/formatPrice.js';
 	import {
-		GradientButton,
 		Input,
 		Label,
 		Modal,
@@ -12,7 +12,8 @@
 		TableBodyRow,
 		TableHead,
 		TableHeadCell,
-		Button
+		Button,
+		Spinner
 	} from 'flowbite-svelte';
 	import {} from 'flowbite-svelte';
 
@@ -20,9 +21,37 @@
 
 	export let data;
 
-	const { form: createForm, errors, enhance, submitting } = superForm(data.createForm);
-
 	let createProductModal = false;
+
+	const {
+		form: createFormInstance,
+		errors: createFormErrors,
+		enhance: createFormEnhance,
+		submitting: createFormSubmitting,
+		reset: createFormReset,
+		message: createFormMessage
+	} = superForm(data.createForm, {
+		clearOnSubmit: 'errors-and-message',
+		onResult({ result, formEl }) {
+			if (result.type === 'success') {
+				createFormReset({
+					keepMessage: false,
+					data: {
+						description: '',
+						name: '',
+						price: 0
+					}
+				});
+				createProductModal = false;
+				// TODO: show toast with success message
+			}
+		}
+	});
+
+	function openCreateProductModal() {
+		createProductModal = true;
+	}
+
 	$: products = data.allProducts;
 </script>
 
@@ -32,7 +61,7 @@
 	<Button
 		type="button"
 		color="light"
-		on:click={() => (createProductModal = true)}>Create Product</Button
+		on:click={openCreateProductModal}>Create Product</Button
 	>
 </header>
 
@@ -42,10 +71,14 @@
 	autoclose={false}
 >
 	<h2 class="mb-2 text-xl dark:text-white">Create Product</h2>
+	{#if $createFormMessage && $page.status !== 200}
+		<p class="text-rose-500">{$createFormMessage}</p>
+	{/if}
 	<form
 		method="post"
 		action="?/create"
 		class="flex flex-col space-y-4"
+		use:createFormEnhance
 	>
 		<Label class="space-y-2">
 			<span>Name</span>
@@ -54,15 +87,21 @@
 				name="name"
 				required
 			/>
+			{#if $createFormErrors?.name}
+				<div class="text-rose-500">{$createFormErrors.name[0]}</div>
+			{/if}
 		</Label>
 		<Label class="space-y-2">
 			<span>Price (in cents)</span>
 			<Input
 				type="number"
 				name="price"
-				placeholder="99999"
+				placeholder="Product price in cents (for example $1 = 100 cents)"
 				required
 			/>
+			{#if $createFormErrors?.price}
+				<div class="text-rose-500">{$createFormErrors.price[0]}</div>
+			{/if}
 		</Label>
 		<Label class="space-y-2">
 			<span>Description</span>
@@ -70,12 +109,23 @@
 				name="description"
 				rows={4}
 			/>
+			{#if $createFormErrors?.description}
+				<div class="text-rose-500">{$createFormErrors.description[0]}</div>
+			{/if}
 		</Label>
 		<Button
 			color="blue"
 			type="submit"
-			class="w-full">Create</Button
+			disabled={$createFormSubmitting}
+			class="w-full"
 		>
+			{#if $createFormSubmitting}
+				<Spinner />
+				Creating...
+			{:else}
+				Create
+			{/if}
+		</Button>
 	</form>
 </Modal>
 

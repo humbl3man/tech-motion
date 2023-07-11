@@ -16,7 +16,7 @@ model Product {
   name        String
   attributes  Attribute[]
   image       String
-  description String
+  description String?
   categories  Category[]
   price       Int
   items       CartItem[]

@@ -1,9 +1,8 @@
+import { placeholderProductImage } from '$lib/constants/image.js';
 import { db } from '$lib/db.js';
 import { fail } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
-
-const placeholderImage = 'https://placehold.co/1080x1080';
 
 const createProductSchema = z.object({
 	name: z
@@ -15,7 +14,8 @@ const createProductSchema = z.object({
 		.number({
 			required_error: 'Product price is required'
 		})
-		.min(100, 'Product price must be at least $1'),
+		.min(100, 'Product price minimum is $1')
+		.max(1000000, 'Product price cannot exceed $10,000'),
 	description: z.string().optional()
 });
 
@@ -42,16 +42,20 @@ export const actions = {
 			return fail(400, { createForm });
 		}
 
-		// TODO: logic for creating the product after validation
-
-		await db.product.create({
-			data: {
-				name: createForm.data.name,
-				price: createForm.data.price,
-				description: createForm.data.description || '',
-				image: placeholderImage
-			}
-		});
+		try {
+			await db.product.create({
+				data: {
+					name: createForm.data.name,
+					price: createForm.data.price,
+					image: placeholderProductImage
+				}
+			});
+		} catch (error) {
+			console.log(error);
+			return message(createForm, 'We encountered server error.', {
+				status: 500
+			});
+		}
 
 		return message(createForm, 'Product created!');
 	}

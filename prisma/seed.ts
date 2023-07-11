@@ -129,7 +129,6 @@ async function main() {
 			// no need to update if product is already in database
 			update: {},
 			create: {
-				sku: product.sku,
 				description: product.description,
 				price: product.price,
 				name: product.name,
