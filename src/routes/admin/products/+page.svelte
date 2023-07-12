@@ -156,6 +156,7 @@
 			<TableHeadCell>SKU</TableHeadCell>
 			<TableHeadCell>Product Name</TableHeadCell>
 			<TableHeadCell>Price</TableHeadCell>
+			<TableHeadCell>Categories</TableHeadCell>
 			<TableHeadCell />
 			<TableHeadCell />
 		</TableHead>
@@ -170,6 +171,11 @@
 					</TableBodyCell>
 					<TableBodyCell>
 						{formatPrice(product.price)}
+					</TableBodyCell>
+					<TableBodyCell>
+						{#if product.categories?.length}
+							{product.categories.map((c) => c.name).join(',')}
+						{/if}
 					</TableBodyCell>
 					<TableBodyCell>
 						<form

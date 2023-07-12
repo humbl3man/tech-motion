@@ -26,7 +26,14 @@ const deleteProductSchema = z.object({
 });
 
 export const load = async (event) => {
+	// get list of products
 	const allProducts = await db.product.findMany({
+		select: {
+			name: true,
+			price: true,
+			sku: true,
+			categories: true
+		},
 		orderBy: {
 			sku: 'asc'
 		}

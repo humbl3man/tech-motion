@@ -45,6 +45,20 @@ async function createAdminUser() {
 	}
 }
 
+async function createRoles() {
+	// roles
+	for (const role of roles) {
+		await db.role.upsert({
+			where: { id: role.id },
+			update: { name: role.name },
+			create: {
+				id: role.id,
+				name: role.name
+			}
+		});
+	}
+}
+
 async function createUsers() {
 	try {
 		for (const user of users) {
@@ -77,43 +91,39 @@ async function createUsers() {
 	}
 }
 
-const roles = [
-	{
-		id: 1,
-		name: 'User'
-	},
-	{
-		id: 2,
-		name: 'Admin'
-	}
-];
-
-async function main() {
-	// roles
-	for (const role of roles) {
-		await db.role.upsert({
-			where: { id: role.id },
-			update: { name: role.name },
+async function createProducts() {
+	for (const product of products) {
+		await db.product.upsert({
+			where: { sku: product.sku },
+			update: {
+				description: product.description,
+				price: product.price,
+				name: product.name,
+				image: product.image,
+				categories: {
+					// for seed data, use "accessories" category.
+					connect: {
+						id: 3
+					}
+				}
+			},
 			create: {
-				id: role.id,
-				name: role.name
+				description: product.description,
+				price: product.price,
+				name: product.name,
+				image: product.image,
+				categories: {
+					// for seed data, use "accessories" category.
+					connect: {
+						id: 3
+					}
+				}
 			}
 		});
 	}
+}
 
-	// attributes
-	for (const attribute of attributes) {
-		await db.attribute.upsert({
-			where: { id: attribute.id },
-			update: { value: attribute.value },
-			create: {
-				id: attribute.id,
-				value: attribute.value
-			}
-		});
-	}
-
-	// categories
+async function createCategories() {
 	for (const category of categories) {
 		await db.category.upsert({
 			where: { id: category.id },
@@ -126,26 +136,48 @@ async function main() {
 			}
 		});
 	}
+}
 
-	// products
-	for (const product of products) {
-		await db.product.upsert({
-			where: { sku: product.sku },
-			// no need to update if product is already in database
-			update: {},
-			create: {
-				description: product.description,
-				price: product.price,
-				name: product.name,
-				image: product.image
-			}
-		});
+const roles = [
+	{
+		id: 1,
+		name: 'User'
+	},
+	{
+		id: 2,
+		name: 'Admin'
 	}
+];
 
+async function main() {
+	// create roles
+	await createRoles();
 	// create our admin user
 	await createAdminUser();
 	// create sample users
 	await createUsers();
+	// create product categories
+	await createCategories();
+
+	// finally we want to create products
+	// we will use created categories for product
+	await createProducts();
+
+	// // attributes
+	// for (const attribute of attributes) {
+	// 	await db.attribute.upsert({
+	// 		where: { id: attribute.id },
+	// 		update: { value: attribute.value },
+	// 		create: {
+	// 			id: attribute.id,
+	// 			value: attribute.value
+	// 		}
+	// 	});
+	// }
+
+	// categories
+
+	// products
 }
 
 main()
