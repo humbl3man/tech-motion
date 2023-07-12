@@ -7,7 +7,6 @@
 	export let product: Product;
 
 	const { errors, enhance, submitting } = superForm(form);
-	$: console.log($errors);
 </script>
 
 <form
