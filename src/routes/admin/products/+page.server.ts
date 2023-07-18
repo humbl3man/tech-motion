@@ -18,6 +18,7 @@ const createProductSchema = z.object({
 		})
 		.min(100, 'Product price minimum is $1')
 		.max(1000000, 'Product price cannot exceed $10,000'),
+	category: z.string(),
 	description: z.string()
 });
 
@@ -26,6 +27,7 @@ const deleteProductSchema = z.object({
 });
 
 export const load = async (event) => {
+	console.log('running load');
 	// get list of products
 	const allProducts = await db.product.findMany({
 		select: {
@@ -39,20 +41,19 @@ export const load = async (event) => {
 		}
 	});
 
-	const createForm = await superValidate(event, createProductSchema);
-	const deleteForms: Array<SuperValidated<typeof deleteProductSchema>> = [];
-
-	allProducts.forEach(async (product) => {
-		const form = await superValidate(deleteProductSchema, {
-			id: product.sku.toString()
-		});
-		deleteForms.push(form);
+	const categoryList = await db.category.findMany({
+		select: {
+			id: true,
+			name: true
+		}
 	});
+
+	const createForm = await superValidate(event, createProductSchema);
 
 	return {
 		allProducts,
 		createForm,
-		deleteForms
+		categoryList
 	};
 };
 
@@ -64,16 +65,35 @@ export const actions = {
 			return fail(400, { createForm });
 		}
 
+		const categoryId = createForm.data.category;
+
 		try {
-			await db.product.create({
-				data: {
-					name: createForm.data.name,
-					price: createForm.data.price,
-					// description is optional
-					description: createForm.data.description || null,
-					image: placeholderProductImage
-				}
-			});
+			if (categoryId) {
+				await db.product.create({
+					data: {
+						name: createForm.data.name,
+						price: createForm.data.price,
+						// description is optional
+						description: createForm.data.description || null,
+						image: placeholderProductImage,
+						categories: {
+							connect: {
+								id: +categoryId
+							}
+						}
+					}
+				});
+			} else {
+				await db.product.create({
+					data: {
+						name: createForm.data.name,
+						price: createForm.data.price,
+						// description is optional
+						description: createForm.data.description || null,
+						image: placeholderProductImage
+					}
+				});
+			}
 		} catch (error) {
 			console.log(error);
 			return message(createForm, 'We encountered server error.', {

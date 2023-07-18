@@ -15,7 +15,9 @@
 		TableHeadCell,
 		Button,
 		Spinner,
-		Toast
+		Toast,
+		MultiSelect,
+		Select
 	} from 'flowbite-svelte';
 
 	import { superForm } from 'sveltekit-superforms/client';
@@ -58,7 +60,16 @@
 		createProductModal = true;
 	}
 
-	$: products = data.allProducts;
+	let products = data.allProducts;
+	let categories = data.categoryList;
+	let selectedCategory: string;
+	$: ({ categoryList } = data);
+	$: categoryOptions = categoryList.map((c) => {
+		return {
+			name: c.name,
+			value: c.id
+		};
+	});
 </script>
 
 <header class="mb-12">
@@ -125,6 +136,15 @@
 			{/if}
 		</Label>
 		<Label class="space-y-2">
+			<span>Primary Category</span>
+			<Select
+				items={categoryOptions}
+				bind:value={selectedCategory}
+				name="category"
+				placeholder="Choose Category..."
+			/>
+		</Label>
+		<Label class="space-y-2">
 			<span>Description</span>
 			<Textarea
 				name="description"
@@ -158,7 +178,6 @@
 			<TableHeadCell>Price</TableHeadCell>
 			<TableHeadCell>Categories</TableHeadCell>
 			<TableHeadCell />
-			<TableHeadCell />
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
 			{#each products as product (product.sku)}
@@ -178,23 +197,13 @@
 						{/if}
 					</TableBodyCell>
 					<TableBodyCell>
-						<form
-							method="post"
-							action="?/update"
+						<Button
+							href="/admin/products/{product.sku}"
+							size="xs"
+							type="button"
+							outline
+							color="primary">Edit</Button
 						>
-							<Button
-								size="xs"
-								type="button"
-								outline
-								color="primary">Update</Button
-							>
-						</form>
-					</TableBodyCell>
-					<TableBodyCell>
-						<ProductDeleteForm
-							{product}
-							form={data.deleteForms.find((f) => f.id === product.sku.toString())}
-						/>
 					</TableBodyCell>
 				</TableBodyRow>
 			{/each}
