@@ -1,26 +1,10 @@
 import { db } from '$lib/db.js';
 import { fail } from '@sveltejs/kit';
 import { z } from 'zod';
-import type { SuperValidated } from 'sveltekit-superforms';
 
 import { message, superValidate } from 'sveltekit-superforms/server';
-import { placeholderProductImage } from '$lib/constants/image.js';
-
-const createProductSchema = z.object({
-	name: z
-		.string({
-			required_error: 'Product name is required'
-		})
-		.min(5, 'Product name must be at least 5 characters long'),
-	price: z
-		.number({
-			required_error: 'Product price is required'
-		})
-		.min(100, 'Product price minimum is $1')
-		.max(1000000, 'Product price cannot exceed $10,000'),
-	category: z.string(),
-	description: z.string()
-});
+import { placeholderProductImage } from '$lib/constants/image';
+import { productSchema } from '$lib/validation/productSchema';
 
 const deleteProductSchema = z.object({
 	sku: z.string()
@@ -48,7 +32,7 @@ export const load = async (event) => {
 		}
 	});
 
-	const createForm = await superValidate(event, createProductSchema);
+	const createForm = await superValidate(event, productSchema);
 
 	return {
 		allProducts,
@@ -59,7 +43,7 @@ export const load = async (event) => {
 
 export const actions = {
 	create: async (event) => {
-		const createForm = await superValidate(event, createProductSchema);
+		const createForm = await superValidate(event, productSchema);
 
 		if (!createForm.valid) {
 			return fail(400, { createForm });

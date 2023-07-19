@@ -1,23 +1,7 @@
 import { db } from '$lib/db';
-import { error } from '@sveltejs/kit';
-import { superValidate } from 'sveltekit-superforms/server';
-import { z } from 'zod';
-
-const productSchema = z.object({
-	name: z
-		.string({
-			required_error: 'Product name is required'
-		})
-		.min(5, 'Product name must be at least 5 characters long'),
-	price: z
-		.number({
-			required_error: 'Product price is required'
-		})
-		.min(100, 'Product price minimum is $1')
-		.max(1000000, 'Product price cannot exceed $10,000'),
-	category: z.string(),
-	description: z.string()
-});
+import { productSchema } from '$lib/validation/productSchema';
+import { error, fail } from '@sveltejs/kit';
+import { message, superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
 	const product = await db.product.findUnique({
@@ -33,6 +17,9 @@ export const load = async (event) => {
 			}
 		}
 	});
+
+	console.log(product);
+
 	if (!product) {
 		throw error(404, 'Product Not Found');
 	}
@@ -43,11 +30,42 @@ export const load = async (event) => {
 			name: true
 		}
 	});
-	const productForm = await superValidate(productSchema);
+
+	const productForm = await superValidate(
+		{ ...product, sku: product.sku.toString(), description: product.description || '' },
+		productSchema
+	);
 
 	return {
 		product,
 		productForm,
 		categories
 	};
+};
+
+export const actions = {
+	update: async (event) => {
+		const form = await superValidate(event, productSchema);
+
+		if (!form.valid) {
+			return fail(400, { form });
+		}
+
+		// TODO: update category if provided in the form
+
+		console.log(form.data);
+
+		await db.product.update({
+			where: {
+				sku: +form.data.sku
+			},
+			data: {
+				name: form.data.name,
+				price: form.data.price,
+				description: form.data.description
+			}
+		});
+
+		return message(form, 'Product Updated');
+	}
 };
