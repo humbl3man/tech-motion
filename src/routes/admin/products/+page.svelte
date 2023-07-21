@@ -1,6 +1,7 @@
 <script lang="ts">
+	import { applyAction, enhance } from '$app/forms';
+	import { invalidateAll } from '$app/navigation';
 	import { page } from '$app/stores';
-	import ProductDeleteForm from '$lib/components/admin/ProductDeleteForm.svelte';
 	import { formatPrice } from '$lib/utils/formatPrice.js';
 	import {
 		Input,
@@ -16,8 +17,9 @@
 		Button,
 		Spinner,
 		Toast,
-		MultiSelect,
-		Select
+		Select,
+		Helper,
+		Alert
 	} from 'flowbite-svelte';
 
 	import { superForm } from 'sveltekit-superforms/client';
@@ -29,17 +31,15 @@
 	let showCreateProductSuccessToast = false;
 
 	const {
-		form: createFormInstance,
-		errors: createFormErrors,
-		enhance: createFormEnhance,
-		submitting: createFormSubmitting,
-		reset: createFormReset,
-		message: createFormMessage
+		errors: createProductErrors,
+		enhance: createProductEnhance,
+		submitting: createProductProcessing,
+		reset: createProductReset,
+		message: createProductMessage
 	} = superForm(data.createForm, {
-		clearOnSubmit: 'errors-and-message',
 		onResult({ result }) {
 			if (result.type === 'success') {
-				createFormReset({
+				createProductReset({
 					keepMessage: false,
 					data: {
 						description: '',
@@ -60,16 +60,8 @@
 		createProductModal = true;
 	}
 
-	let products = data.allProducts;
-	let categories = data.categoryList;
+	let categoryItems = data.categoryList.map((cat) => ({ name: cat.name, value: cat.id }));
 	let selectedCategory: string;
-	$: ({ categoryList } = data);
-	$: categoryOptions = categoryList.map((c) => {
-		return {
-			name: c.name,
-			value: c.id
-		};
-	});
 </script>
 
 <header class="mb-12">
@@ -82,7 +74,7 @@
 	>
 </header>
 
-{#if showCreateProductSuccessToast && $createFormMessage && $page.status === 200}
+{#if showCreateProductSuccessToast && $createProductMessage && $page.status === 200}
 	<div class="fixed bottom-4 right-4 z-[9999] w-full px-4">
 		<Toast
 			color="green"
@@ -92,35 +84,41 @@
 			<svelte:fragment slot="icon">
 				<CheckIcon />
 			</svelte:fragment>
-			{$createFormMessage}
+			{$createProductMessage}
 		</Toast>
 	</div>
 {/if}
 
+<!-- Begin Product Create Modal -->
 <Modal
 	bind:open={createProductModal}
 	size="sm"
 	autoclose={false}
 >
 	<h2 class="mb-2 text-xl dark:text-white">Create Product</h2>
-	{#if $createFormMessage && $page.status !== 200}
-		<p class="text-rose-500">{$createFormMessage}</p>
+	{#if $createProductMessage && $page.status !== 200}
+		<Alert
+			class="text-base"
+			color="red">{$createProductMessage}</Alert
+		>
 	{/if}
 	<form
 		method="post"
 		action="?/create"
 		class="flex flex-col space-y-4"
-		use:createFormEnhance
+		use:createProductEnhance
 	>
 		<Label class="space-y-2">
 			<span>Name</span>
 			<Input
 				type="text"
 				name="name"
-				required
 			/>
-			{#if $createFormErrors?.name}
-				<div class="text-rose-500">{$createFormErrors.name[0]}</div>
+			{#if $createProductErrors?.name}
+				<Helper
+					class="mt-2 text-sm"
+					color="red">{$createProductErrors.name[0]}</Helper
+				>
 			{/if}
 		</Label>
 		<Label class="space-y-2">
@@ -129,38 +127,49 @@
 				type="number"
 				name="price"
 				placeholder="Product price in cents (for example $1 = 100 cents)"
-				required
 			/>
-			{#if $createFormErrors?.price}
-				<div class="text-rose-500">{$createFormErrors.price[0]}</div>
+			{#if $createProductErrors?.price}
+				<Helper
+					class="mt-2 text-sm"
+					color="red">{$createProductErrors.price[0]}</Helper
+				>
 			{/if}
 		</Label>
 		<Label class="space-y-2">
 			<span>Primary Category</span>
 			<Select
-				items={categoryOptions}
+				items={categoryItems}
 				bind:value={selectedCategory}
 				name="category"
 				placeholder="Choose Category..."
 			/>
 		</Label>
+		{#if $createProductErrors?.category}
+			<Helper
+				class="mt-2 text-sm"
+				color="red">{$createProductErrors.category[0]}</Helper
+			>
+		{/if}
 		<Label class="space-y-2">
 			<span>Description</span>
 			<Textarea
 				name="description"
 				rows={4}
 			/>
-			{#if $createFormErrors?.description}
-				<div class="text-rose-500">{$createFormErrors.description[0]}</div>
+			{#if $createProductErrors?.description}
+				<Helper
+					class="mt-2 text-sm"
+					color="red">{$createProductErrors.description[0]}</Helper
+				>
 			{/if}
 		</Label>
 		<Button
 			color="blue"
 			type="submit"
-			disabled={$createFormSubmitting}
+			disabled={$createProductProcessing}
 			class="w-full"
 		>
-			{#if $createFormSubmitting}
+			{#if $createProductProcessing}
 				<Spinner />
 				Creating...
 			{:else}
@@ -169,6 +178,7 @@
 		</Button>
 	</form>
 </Modal>
+<!-- End Product Create Modal -->
 
 <section class="dark:text-slate-300">
 	<Table shadow>
@@ -180,7 +190,7 @@
 			<TableHeadCell />
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
-			{#each products as product (product.sku)}
+			{#each data.products as product (product.sku)}
 				<TableBodyRow>
 					<TableBodyCell>
 						{product.sku}

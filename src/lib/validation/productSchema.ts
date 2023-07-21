@@ -13,6 +13,6 @@ export const productSchema = z.object({
 		})
 		.min(100, 'Product price minimum is $1')
 		.max(10000000, 'Product price cannot exceed $10,000'),
-	description: z.string().default(''),
-	category: z.string().default('')
+	category: z.number().positive('Product category is required'),
+	description: z.string().default('')
 });
