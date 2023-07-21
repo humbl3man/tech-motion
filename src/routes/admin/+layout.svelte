@@ -6,6 +6,9 @@
 	import IconPerson from '~icons/mdi/person';
 	import IconProduct from '~icons/mdi/cube-outline';
 	let spanClass = 'flex-1 ml-3 whitespace-nowrap';
+
+	export let data;
+
 	$: activeUrl = $page.url.pathname;
 </script>
 
@@ -27,7 +30,7 @@
 					</SidebarItem>
 					<SidebarItem
 						href="/admin/products"
-						label="Manage Products"
+						label="Manage products ({data.productCount})"
 						active={activeUrl === '/admin/products'}
 						{spanClass}
 					>
@@ -37,7 +40,7 @@
 					</SidebarItem>
 					<SidebarItem
 						href="/admin/users"
-						label="Manage Users"
+						label="Manage Users ({data.userCount})"
 						active={activeUrl === '/admin/users'}
 						{spanClass}
 					>
