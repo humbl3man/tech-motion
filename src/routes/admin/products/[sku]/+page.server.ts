@@ -16,8 +16,7 @@ export const load = async (event) => {
 		include: {
 			categories: {
 				select: {
-					id: true,
-					name: true
+					id: true
 				}
 			}
 		}
@@ -35,7 +34,7 @@ export const load = async (event) => {
 	});
 
 	const updateForm = await superValidate(
-		{ ...product, sku: product.sku.toString(), description: product.description || '' },
+		{ ...product, sku: product.sku.toString(), category: product.categories[0].id, description: product.description || '' },
 		productSchema
 	);
 
@@ -50,23 +49,26 @@ export const load = async (event) => {
 };
 
 export const actions = {
-	update: async (event) => {
-		const form = await superValidate(event, productSchema);
+	update: async ({ request, params }) => {
+		const sku = Number(params.sku);
+		const form = await superValidate(request, productSchema);
 
 		if (!form.valid) {
 			return fail(400, { form });
 		}
 
-		// TODO: update category if provided in the form
-
 		await db.product.update({
 			where: {
-				sku: +form.data.sku
+				sku
 			},
 			data: {
 				name: form.data.name,
 				price: form.data.price,
-				description: form.data.description
+				description: form.data.description,
+				categories: {
+					set: [],
+					connect: { id: Number(form.data.category) }
+				}
 			}
 		});
 

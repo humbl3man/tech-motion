@@ -6,9 +6,14 @@
 	export let data;
 
 	let categoryItems = data.categories.map((cat) => ({ name: cat.name, value: cat.id }));
-	let selectedCategory = data.product.categories[0]?.id || null;
 
-	const { form: updateForm, errors: updateErrors, enhance: updateEnhance, message: updateMessage } = superForm(data.updateForm);
+	const {
+		form: updateForm,
+		errors: updateErrors,
+		enhance: updateEnhance,
+		message: updateMessage,
+		submitting: updateSubmitting
+	} = superForm(data.updateForm);
 	const {
 		form: deleteForm,
 		errors: deleteErrors,
@@ -24,6 +29,7 @@
 	});
 
 	let deleteModal = false;
+	let selectedCategory = $updateForm.category;
 </script>
 
 <Modal
@@ -82,8 +88,14 @@
 	</div>
 </Modal>
 
-<header class="mb-12">
+<header class="mb-4">
 	<h1 class="mb-4 text-2xl">Manage Product</h1>
+	<Helper
+		color="gray"
+		helperClass="text-base"
+	>
+		SKU# {data.product.sku}
+	</Helper>
 </header>
 
 <section>
@@ -126,7 +138,6 @@
 				id="name"
 				color={$updateErrors?.name ? 'red' : 'base'}
 				bind:value={$updateForm.name}
-				required
 			/>
 			{#if $updateErrors?.name}
 				<Helper
@@ -172,7 +183,10 @@
 				placeholder="Choose Category..."
 			/>
 			{#if $updateErrors?.category}
-				<Helper class="mt-2 text-sm dark:text-slate-300">{$updateErrors.category[0]}</Helper>
+				<Helper
+					color="red"
+					class="mt-2 text-sm dark:text-slate-300">{$updateErrors.category[0]}</Helper
+				>
 			{/if}
 		</div>
 		<div>
@@ -191,8 +205,19 @@
 		<div class="flex justify-end gap-2">
 			<Button
 				type="submit"
-				color="blue">Update</Button
+				color="blue"
 			>
+				{#if $updateSubmitting}
+					<Spinner
+						size="4"
+						type="light"
+						class="mr-2"
+					/>
+					Updating...
+				{:else}
+					Update
+				{/if}
+			</Button>
 			<Button
 				on:click={() => (deleteModal = true)}
 				type="button"
