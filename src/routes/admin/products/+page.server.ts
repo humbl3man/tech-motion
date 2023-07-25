@@ -1,12 +1,11 @@
 import { db } from '$lib/db.js';
 import { fail } from '@sveltejs/kit';
-import { z } from 'zod';
 
 import { message, superValidate } from 'sveltekit-superforms/server';
 import { placeholderProductImage } from '$lib/constants/image';
 import { productSchema } from '$lib/validation/productSchema';
 
-export const load = async (event) => {
+export const load = async () => {
 	// get list of products
 	const products = await db.product.findMany({
 		select: {
