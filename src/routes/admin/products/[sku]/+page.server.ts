@@ -92,14 +92,14 @@ export const actions = {
 				}
 			});
 
-			const numberOfCartItemsReferencingProduct = await db.cartItem.count({
+			const cartItemsProduct = await db.cartItem.count({
 				where: {
 					productId: productToDelete.sku
 				}
 			});
 
 			// delete all cart items and products if at least 1 user cart has this product.
-			if (numberOfCartItemsReferencingProduct > 0) {
+			if (cartItemsProduct > 0) {
 				await db.cartItem.deleteMany({
 					where: {
 						productId: sku
@@ -114,7 +114,7 @@ export const actions = {
 			});
 		} catch (error: any) {
 			console.error(error.message);
-			return message(deleteForm, 'unable to delete', {
+			return message(deleteForm, `Unable to delete product: ${error.message}`, {
 				status: 400
 			});
 		}
