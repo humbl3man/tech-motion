@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { Alert, Button, Helper, Input, Label, Select, Spinner, Textarea } from 'flowbite-svelte';
+	import { Alert, Button, Helper, Input, Label, Modal, Select, Spinner, Textarea } from 'flowbite-svelte';
 	import { superForm } from 'sveltekit-superforms/client';
+	import TrashIcon from '~icons/mdi/trash';
 
 	export let data;
 
-	let { product } = data;
 	let categoryItems = data.categories.map((cat) => ({ name: cat.name, value: cat.id }));
 	let selectedCategory = data.product.categories[0]?.id || null;
 
@@ -15,8 +15,72 @@
 		enhance: deleteEnhance,
 		message: deleteMessage,
 		submitting: deleteProcessing
-	} = superForm(data.deleteForm);
+	} = superForm(data.deleteForm, {
+		onResult({ result }) {
+			if (result.type === 'failure') {
+				deleteModal = false;
+			}
+		}
+	});
+
+	let deleteModal = false;
 </script>
+
+<Modal
+	bind:open={deleteModal}
+	size="xs"
+	autoclose={false}
+>
+	<div class="text-center">
+		<svg
+			aria-hidden="true"
+			class="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200"
+			fill="none"
+			stroke="currentColor"
+			viewBox="0 0 24 24"
+			xmlns="http://www.w3.org/2000/svg"
+			><path
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				stroke-width="2"
+				d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+			/></svg
+		>
+		<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+			Are you sure you want to delete <strong class="dark:text-white">&quot;{data.product.name}&quot;</strong>?
+		</h3>
+		<form
+			method="post"
+			action="?/delete"
+			use:deleteEnhance
+		>
+			<div class="flex items-center justify-center gap-2">
+				<Button
+					type="submit"
+					color="red"
+					disabled={$deleteProcessing}
+				>
+					{#if $deleteProcessing}
+						<Spinner
+							class="mr-2"
+							color="white"
+							size="4"
+						/>
+						Deleting...
+					{:else}
+						Yes, Delete.
+					{/if}
+				</Button>
+				<Button
+					type="button"
+					color="light"
+					disabled={$deleteProcessing}
+					on:click={() => (deleteModal = false)}>No, cancel</Button
+				>
+			</div>
+		</form>
+	</div>
+</Modal>
 
 <header class="mb-12">
 	<h1 class="mb-4 text-2xl">Manage Product</h1>
@@ -124,33 +188,17 @@
 				bind:value={$updateForm.description}
 			/>
 		</div>
-		<div>
+		<div class="flex justify-end gap-2">
 			<Button
 				type="submit"
 				color="blue">Update</Button
 			>
+			<Button
+				on:click={() => (deleteModal = true)}
+				type="button"
+				color="light"><TrashIcon class="mr-2" /> Delete</Button
+			>
 		</div>
 	</form>
-	<div class="mt-4">
-		<form
-			method="post"
-			action="?/delete"
-			use:deleteEnhance
-		>
-			<Button
-				type="submit"
-				color="red"
-			>
-				{#if $deleteProcessing}
-					<Spinner
-						class="mr-2"
-						color="white"
-					/>
-					Deleting...
-				{:else}
-					Delete This Product
-				{/if}
-			</Button>
-		</form>
-	</div>
+	<div class="mt-4" />
 </section>

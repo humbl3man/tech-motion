@@ -72,26 +72,21 @@ export const actions = {
 
 		return message(form, 'Product Updated');
 	},
-	delete: async ({ request, params }) => {
-		const deleteForm = await superValidate(
-			{
-				sku: +params.sku
-			},
-			deleteProductSchema
-		);
+	delete: async ({ params }) => {
+		const sku = Number(params.sku);
+
+		const deleteForm = await superValidate({ sku }, deleteProductSchema);
 
 		if (!deleteForm.valid) {
-			return message(deleteForm, 'unable to delete', {
+			return message(deleteForm, 'Unable to delete product: SKU parameter is missing.', {
 				status: 400
 			});
 		}
 
-		const sku = +params.sku;
-
 		try {
 			const productToDelete = await db.product.findUniqueOrThrow({
 				where: {
-					sku: +params.sku
+					sku: sku
 				}
 			});
 
