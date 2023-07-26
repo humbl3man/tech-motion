@@ -1,12 +1,9 @@
 <script lang="ts">
-	import { applyAction, enhance } from '$app/forms';
-	import { invalidateAll } from '$app/navigation';
-	import { Button, Spinner, Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell } from 'flowbite-svelte';
+	import { Button, Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell } from 'flowbite-svelte';
 
 	import { formatDate } from '$lib/utils/formatDate';
 
 	export let data;
-	let deleteUserRecords: Array<string> = [];
 	$: users = data.allUsersData;
 </script>
 
@@ -15,6 +12,7 @@
 <section class="dark:text-slate-300">
 	<Table shadow>
 		<TableHead>
+			<TableHeadCell>Id</TableHeadCell>
 			<TableHeadCell>Email</TableHeadCell>
 			<TableHeadCell>Role</TableHeadCell>
 			<TableHeadCell>First Name</TableHeadCell>
@@ -27,6 +25,9 @@
 		<TableBody tableBodyClass="divide-y">
 			{#each users as user (user.email)}
 				<TableBodyRow>
+					<TableBodyCell>
+						{user.id}
+					</TableBodyCell>
 					<TableBodyCell>
 						{user.email}
 					</TableBodyCell>
@@ -49,41 +50,11 @@
 						{formatDate(user.updatedAt)}
 					</TableBodyCell>
 					<TableBodyCell>
-						<form
-							method="post"
-							action="?/delete_user"
-							class="mt-2"
-							use:enhance={() => {
-								deleteUserRecords = [...deleteUserRecords, user.email];
-								return async ({ result }) => {
-									await invalidateAll();
-									await applyAction(result);
-									deleteUserRecords = deleteUserRecords.filter((record) => !record.includes(user.email));
-								};
-							}}
+						<Button
+							color="light"
+							size="sm"
+							href="/admin/users/{user.id}">Edit</Button
 						>
-							<input
-								type="hidden"
-								name="user_email"
-								value={user.email}
-							/>
-							<Button
-								color="red"
-								outline
-								disabled={deleteUserRecords.includes(user.email)}
-								size="xs"
-								type="submit"
-							>
-								{#if deleteUserRecords.includes(user.email)}
-									<Spinner
-										size="3"
-										class="mr-4"
-									/> Deleting...
-								{:else}
-									Delete User
-								{/if}
-							</Button>
-						</form>
 					</TableBodyCell>
 				</TableBodyRow>
 			{/each}

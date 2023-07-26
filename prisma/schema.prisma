@@ -52,7 +52,8 @@ model Attribute {
 }
 
 model User {
-  email           String   @id @unique
+  id              Int      @id @default(autoincrement())
+  email           String   @unique
   firstName       String?
   lastName        String?
   passwordHash    String
