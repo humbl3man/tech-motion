@@ -7,7 +7,7 @@
 
 <Alert
 	{...props}
-	class="my-4 rounded-none border-l-4"
+	class="rounded-none border-l-4"
 >
 	<span class="font-bold">
 		<slot name="title" />

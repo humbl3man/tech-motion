@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { Alert, Button, Helper, Input, Label, Modal, Select, Spinner, Textarea } from 'flowbite-svelte';
+	import { Button, Helper, Input, Label, Modal, Select, Spinner, Textarea } from 'flowbite-svelte';
 	import { superForm } from 'sveltekit-superforms/client';
 	import TrashIcon from '~icons/mdi/trash';
+	import CustomAlert from '$lib/components/CustomAlert.svelte';
 
 	export let data;
 
@@ -113,17 +114,25 @@
 
 		<!-- Feedback Messages -->
 		{#if $updateMessage}
-			<Alert color="green">
-				<span class="font-bold">Success!</span>
-				{$updateMessage}
-			</Alert>
+			<CustomAlert
+				props={{
+					color: 'green'
+				}}
+			>
+				<svelte:fragment slot="title">Success:</svelte:fragment>
+				<svelte:fragment slot="message">{$updateMessage}</svelte:fragment>
+			</CustomAlert>
 		{/if}
 
 		{#if $deleteMessage}
-			<Alert color="red">
-				<span class="font-bold">Error</span>
-				{$deleteMessage}
-			</Alert>
+			<CustomAlert
+				props={{
+					color: 'red'
+				}}
+			>
+				<svelte:fragment slot="title">Delete Error:</svelte:fragment>
+				<svelte:fragment slot="message">{$deleteMessage}</svelte:fragment>
+			</CustomAlert>
 		{/if}
 
 		<div>
