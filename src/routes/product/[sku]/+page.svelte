@@ -1,14 +1,34 @@
-<script>
+<script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
-	import { goto, invalidateAll } from '$app/navigation';
+	import { invalidateAll } from '$app/navigation';
 	import Container from '$lib/components/Container.svelte';
 	import Loader from '$lib/components/Loader.svelte';
 	import { formatPrice } from '$lib/utils/formatPrice';
 	import { slugify } from '$lib/utils/slugify';
+	import { Toast } from 'flowbite-svelte';
+	import { onDestroy } from 'svelte';
+	import { blur } from 'svelte/transition';
+	import IconCart from '~icons/mdi/cart';
 
 	export let data;
-	let isProcessing = false;
 
+	let isProcessing = false;
+	let showAddToCartToast = false;
+	let counter = 5;
+
+	function triggerAddToCartToast() {
+		showAddToCartToast = true;
+		counter = 5;
+		addToCartToastTimeout();
+	}
+
+	function addToCartToastTimeout() {
+		if (--counter > 0) {
+			setTimeout(addToCartToastTimeout, 1000);
+		} else {
+			showAddToCartToast = false;
+		}
+	}
 	$: ({ product } = data);
 </script>
 
@@ -43,7 +63,11 @@
 						return async ({ result }) => {
 							await invalidateAll();
 							await applyAction(result);
-							goto('/cart');
+							isProcessing = false;
+
+							if (result.type === 'success') {
+								triggerAddToCartToast();
+							}
 						};
 					}}
 				>
@@ -60,9 +84,22 @@
 							<Loader />
 							Adding...
 						{:else}
-							Add to Bag
+							Add to Cart
 						{/if}
 					</button>
+					<Toast
+						color="indigo"
+						transition={blur}
+						class="mt-2 dark:text-white"
+						params={{ amount: 10 }}
+						bind:open={showAddToCartToast}
+					>
+						<svelte:fragment slot="icon">
+							<IconCart />
+							<span class="sr-only">Cart Icon</span>
+						</svelte:fragment>
+						<span>Item added to cart.</span>
+					</Toast>
 				</form>
 			{/if}
 		</div>
