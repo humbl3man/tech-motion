@@ -5,8 +5,8 @@ import { z } from 'zod';
 
 const userUpdateSchema = z.object({
 	// email: z.string(),
-	firstName: z.nullable(z.string().min(2, 'First name must contain at least 2 characters').optional()),
-	lastName: z.nullable(z.string().min(2, 'Last name must contain at least 2 characters').optional()),
+	firstName: z.nullable(z.string().optional()),
+	lastName: z.nullable(z.string().optional()),
 	phoneNumber: z.nullable(z.string().optional()),
 	shippingAddress: z.nullable(z.string().optional())
 });

@@ -1,8 +1,5 @@
 <script lang="ts">
-	import { slugify } from '$lib/utils/slugify.js';
 	import { GradientButton } from 'flowbite-svelte';
-
-	export let data;
 </script>
 
 <section class="bg-white dark:bg-gray-900">

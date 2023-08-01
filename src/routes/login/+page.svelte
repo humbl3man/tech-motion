@@ -1,62 +1,62 @@
 <script lang="ts">
-	import { applyAction } from '$app/forms';
-	import { invalidateAll } from '$app/navigation';
+	import CustomAlert from '$lib/components/CustomAlert.svelte';
 	import Loader from '$lib/components/Loader.svelte';
+	import { Alert, Button, Helper, Input, Label } from 'flowbite-svelte';
 	import { superForm } from 'sveltekit-superforms/client';
 
 	export let data;
-	export let {
-		form: loginForm,
-		errors,
-		message,
-		enhance,
-		submitting
-	} = superForm(data.form, {
-		taintedMessage: 'Are you sure you want to leave?'
-	});
+	export let { form: loginForm, errors, message, enhance, submitting } = superForm(data.form);
 </script>
 
 <div class="container mx-auto mt-12 max-w-md px-4">
 	<h1 class="mb-8 text-4xl">Login</h1>
+	{#if $message}
+		<CustomAlert
+			props={{
+				color: 'red'
+			}}
+		>
+			<svelte:fragment slot="title">Login Error:</svelte:fragment>
+			<svelte:fragment slot="message">{$message}</svelte:fragment>
+		</CustomAlert>
+	{/if}
 	<form
 		method="post"
 		use:enhance
 	>
 		<div class="flex flex-col gap-6">
 			<div class="flex flex-col gap-2">
-				<label for="email">Email</label>
-				<input
+				<Label for="email">Email</Label>
+				<Input
 					type="email"
 					name="email"
 					id="email"
-					class="input block w-full"
 					placeholder="john@example.com"
+					color={$errors?.email ? 'red' : 'base'}
 					required
 				/>
 				{#if $errors?.email}
-					<p class="text-rose-500">{$errors.email[0]}</p>
+					<Helper color="red">{$errors.email[0]}</Helper>
 				{/if}
 			</div>
 			<div class="flex flex-col gap-2">
-				<label for="password">Password</label>
-				<input
+				<Label for="password">Password</Label>
+				<Input
 					type="password"
 					name="password"
 					id="password"
-					class="input block w-full"
+					color={$errors?.password ? 'red' : 'base'}
 					required
 				/>
 				{#if $errors?.password}
-					<p class="text-rose-500">{$errors.password[0]}</p>
+					<Helper color="red">{$errors.password[0]}</Helper>
 				{/if}
 			</div>
-			{#if $message}
-				<div class="text-rose-500">{$message}</div>
-			{/if}
 			<div>
-				<button
+				<Button
 					type="submit"
-					class="btn w-full sm:w-1/2"
+					color="blue"
+					class="sm:w-1/2"
 					disabled={$submitting}
 				>
 					{#if $submitting}
@@ -65,14 +65,14 @@
 					{:else}
 						Login
 					{/if}
-				</button>
+				</Button>
 			</div>
 		</div>
 	</form>
-	<p class="mt-6">
+	<Helper class="my-6 text-sm">
 		Not Registered? <a
 			href="/register"
 			class="link">Create Account</a
 		>
-	</p>
+	</Helper>
 </div>

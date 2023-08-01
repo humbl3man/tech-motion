@@ -2,7 +2,6 @@
 	import { getRoleName } from '$lib/utils/getRoleName.js';
 	import { Alert, Button, Helper, Input, Label, Modal, Spinner } from 'flowbite-svelte';
 	import { superForm } from 'sveltekit-superforms/client';
-
 	import TrashIcon from '~icons/mdi/trash';
 
 	export let data;
@@ -30,7 +29,7 @@
 
 	let deleteModal = false;
 
-	// cannot delete yourself.
+	// users can't delete themselves
 	$: showDeleteButton = data.user.email !== data.userProfile.email;
 </script>
 

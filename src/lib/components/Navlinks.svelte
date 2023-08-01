@@ -42,13 +42,6 @@
 				on:click={clickHandler}>Products</a
 			>
 		</li>
-		<li>
-			<a
-				href="/contact"
-				class="block w-full p-1 sm:inline-block sm:w-auto sm:p-0"
-				on:click={clickHandler}>Contact</a
-			>
-		</li>
 		<!-- Cart -->
 		{#if isUserLoggedIn}
 			<li>

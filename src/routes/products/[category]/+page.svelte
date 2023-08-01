@@ -5,6 +5,7 @@
 	import { toTitleCase } from '$lib/utils/titleCase';
 
 	export let data;
+
 	$: products = data.products.sort((a, b) => a.sku - b.sku);
 	$: categoryTitle = toTitleCase($page.params.category.replaceAll('-', ' '));
 </script>

@@ -1,7 +1,7 @@
 import { Role } from '$lib/constants/Role.js';
 import { db } from '$lib/db';
 
-export const load = async ({ locals }) => {
+export const load = async () => {
 	const allUsersData = await db.user.findMany({
 		where: {
 			// filter by user role, only return users not admins

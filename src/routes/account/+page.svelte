@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
-	import Alert from '$lib/components/Alert.svelte';
+	import CustomAlert from '$lib/components/CustomAlert.svelte';
 	import Loader from '$lib/components/Loader.svelte';
+	import { Button, Helper, Input, Label } from 'flowbite-svelte';
 	import { superForm } from 'sveltekit-superforms/client';
 	import ExitIcon from '~icons/mdi/exit-to-app';
 
@@ -34,10 +35,14 @@
 	</header>
 
 	{#if $message}
-		<Alert type="success">
+		<CustomAlert
+			props={{
+				color: 'green'
+			}}
+		>
 			<svelte:fragment slot="title">Success!</svelte:fragment>
 			<svelte:fragment slot="message">{$message}</svelte:fragment>
-		</Alert>
+		</CustomAlert>
 	{/if}
 
 	<form
@@ -47,59 +52,61 @@
 	>
 		<div class="flex flex-col gap-6">
 			<div class="flex flex-col gap-2">
-				<label for="email">Email</label>
-				<input
+				<Label for="email">Email</Label>
+				<Input
 					id="email"
-					class="input block w-full"
-					readonly
+					disabled
 					value={data.user.email}
 				/>
 			</div>
 			<div class="flex flex-col gap-4 sm:flex-row">
 				<div class="flex w-full flex-col gap-2 sm:w-1/2">
-					<label for="firstName">First Name</label>
-					<input
+					<Label for="firstName">First Name</Label>
+					<Input
 						type="text"
 						name="firstName"
 						id="firstName"
-						class="input block w-full"
+						color={$errors?.firstName ? 'red' : 'base'}
 						bind:value={$accountForm.firstName}
 					/>
 					{#if $errors?.firstName}
-						<p class="text-rose-500">{$errors.firstName[0]}</p>
+						<Helper color="red">{$errors.firstName[0]}</Helper>
 					{/if}
 				</div>
 				<div class="flex w-full flex-col gap-2 sm:w-1/2">
-					<label for="lastName">Last Name</label>
-					<input
+					<Label for="lastName">Last Name</Label>
+					<Input
 						type="text"
 						name="lastName"
 						id="lastName"
-						class="input block w-full"
+						color={$errors?.lastName ? 'red' : 'base'}
 						bind:value={$accountForm.lastName}
 					/>
 					{#if $errors?.lastName}
-						<p class="text-rose-500">{$errors.lastName[0]}</p>
+						<Helper color="red">{$errors.lastName[0]}</Helper>
 					{/if}
 				</div>
 			</div>
 			<div class="flex flex-col gap-2">
 				<label for="phoneNumber">Phone Number</label>
-				<input
+				<Input
 					type="text"
 					name="phoneNumber"
 					id="phoneNumber"
-					class="input block w-full"
+					color={$errors?.phoneNumber ? 'red' : 'base'}
+					placeholder="(555) 555 - 1234"
 					bind:value={$accountForm.phoneNumber}
 				/>
 				{#if $errors?.phoneNumber}
-					<p class="text-rose-500">{$errors.phoneNumber[0]}</p>
+					<Helper color="red">{$errors.phoneNumber[0]}</Helper>
 				{/if}
+				<Helper>Example: (555) - 555 - 1234</Helper>
 			</div>
 			<div class="flex flex-row gap-2">
-				<button
+				<Button
 					type="submit"
-					class="btn w-full sm:w-1/2"
+					class="sm:w-1/2"
+					color="blue"
 					disabled={$submitting}
 				>
 					{#if $submitting}
@@ -108,7 +115,7 @@
 					{:else}
 						Update Account
 					{/if}
-				</button>
+				</Button>
 			</div>
 		</div>
 	</form>
