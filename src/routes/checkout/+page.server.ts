@@ -5,20 +5,33 @@ export const load = async (event) => {
 	if (!event.locals?.user?.email) {
 		throw redirect(307, '/');
 	}
-	const cart = await db.cart.findUnique({
+	const order = await db.cart.findUnique({
 		where: {
 			userId: event.locals.user.email
 		},
-		include: {
-			items: true
+		select: {
+			items: {
+				select: {
+					product: {
+						select: {
+							sku: true,
+							name: true,
+							image: true,
+							price: true
+						}
+					},
+					quantity: true
+				}
+			}
 		}
 	});
 
-	if (cart?.items.length === 0) {
+	// redirect to cart if no items are in cart.
+	if (order?.items.length === 0) {
 		throw redirect(307, '/cart');
 	}
 
 	return {
-		cart
+		order
 	};
 };
