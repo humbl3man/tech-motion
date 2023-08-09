@@ -2,15 +2,14 @@
 	import { applyAction, enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
 	import { formatPrice } from '$lib/utils/formatPrice';
+	import { getCartSubtotal } from '$lib/utils/getCartSubtotal';
 
 	export let data;
+
 	let deleteSkus: Array<number | string> = [];
 
 	$: cartItems = data.cartItems ?? [];
-	$: subtotal = cartItems.reduce((total, item) => {
-		total += item.quantity * item.product?.price;
-		return total;
-	}, 0);
+	$: subtotal = getCartSubtotal(cartItems);
 	$: isCheckoutDisabled = subtotal <= 0;
 </script>
 
