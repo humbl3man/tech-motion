@@ -1,4 +1,4 @@
-import { db } from '$lib/db.js';
+import { db } from '$lib/db';
 
 export const load = async (event) => {
 	const categories = await db.category.findMany();

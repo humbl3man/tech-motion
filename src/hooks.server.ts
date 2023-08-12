@@ -33,4 +33,23 @@ const auth: Handle = async ({ event, resolve }) => {
 	return await resolve(event);
 };
 
-export const handle = sequence(auth);
+const logger: Handle = async ({ event, resolve }) => {
+	const url = event.request.url;
+
+	const start = performance.now();
+	const response = await resolve(event);
+	const end = performance.now();
+
+	const duration = end - start;
+	const message = `${event.request.method} request url ${url} took ${duration.toFixed(2)}ms`;
+
+	if (duration > 1000) {
+		console.log(`🐢 ${message}`);
+	} else {
+		console.log(`🚀 ${message}`);
+	}
+
+	return response;
+};
+
+export const handle = sequence(auth, logger);
