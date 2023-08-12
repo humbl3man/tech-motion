@@ -1,3 +1,4 @@
-# Tech Motion
+# Tech Motion 💪🏻 🏃🏻👕
 
-Fictional website for company selling fitness gear.
+Website for a fictional company selling fitness gear.
+[Website URI](https://tech-motion.vercel.app)
